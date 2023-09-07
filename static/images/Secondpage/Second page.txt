@@ -1,0 +1,26 @@
+Upload Video Files 
+Choose a Video file:
+Drag and drop file here
+Limit 200MB per file . MP4, MKV, AVI, MPEG4
+Browse files
+Or Put A YouTube URL / Live Stream
+YouTube
+Live Stream
+Filename or YouTube URL / Live Stream:
+ex: https://www.youtube.com/watchvideo
+Email address to send results to:
+ex: name@gamail.com
+
+Match Setup
+Match Start Time
+Hour
+Minute
+Second
+Analysis Time
+Choose Teams colors
+Advanced Settings
+HeatMaps
+Zone Analysis
+Speed Analysis
+Text Analysis
+Start Processing

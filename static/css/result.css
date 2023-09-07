@@ -1,0 +1,272 @@
+* {
+    overflow-x: hidden;
+    padding: 0px;
+}
+
+body {
+    background-color: black;
+}
+
+/* NavBar */
+
+#highlight_status{
+    display: none;
+}
+.navbar {
+    position: fixed;
+    background-color: transparent;
+    color: #fff !important;
+    z-index: 1111111111 !important;
+    width: 100%;
+    top: 0;
+}
+.navbar-brand img {
+    width: 120px;
+}
+
+.nav-link {
+    color: #fff !important;
+}
+
+/* mainSection */
+
+.mainSection {
+    position: relative;
+    background-image: url("../images/FirstPage/landing.png");
+    background-repeat: no-repeat;
+    /* height: 600px; */
+    overflow: hidden;
+}
+
+
+/* videoCanvas */
+
+#videoCanvas {
+    width: 100%;
+    margin: auto;
+    height: 480px;
+    border: .5px solid #fff;
+    /* background-color: #000; */
+    border-radius: 15px;
+
+}
+
+.mainSection .container {
+    position: relative;
+}
+
+.moreInsights {
+    position: absolute;
+    bottom: 5%;
+    left: 8%;
+    padding: 3px 10px;
+    background-color: #fff;
+    color: #663399;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.moreInsights p {
+    padding: 5px;
+    border-left: 5px solid #663399;
+    font-weight: b;
+}
+
+/* insightsResultController */
+.insightsResultController {
+    background-color: #Fff;
+    border-radius: 50px;
+
+}
+
+.insightsResultController {
+    background-color: #Fff;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 25px;
+
+}
+
+.insightController {
+    width: 100%;
+}
+
+.insightController p {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.insightControllerActive {
+    background-color: #663399;
+    color: #Fff !important;
+}
+
+.addLight {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.addLight p {
+    color: #000;
+    text-align: start;
+}
+
+.ai,
+.text,
+.speed,
+.zone,
+.insightsResult {
+    display: none;
+}
+
+.closeInsights {
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/*Footer*/
+.footer {
+    background-image: url("../images/FirstPage/footer.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+
+}
+
+.footer h5 {
+    overflow: hidden;
+}
+
+.footer a,
+.footer a:hover,
+.footer p,
+.footer li {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+
+.fooInp {
+    width: 60%;
+    height: 35px;
+    border: 1px solid #858585;
+    padding: 5px;
+    outline: none;
+    background-color: #000;
+    color: #fff;
+}
+
+.fooButn {
+    border: 1px solid #fff;
+    padding: 5px 10px;
+    outline: none;
+    background-color: #000;
+    color: #Fff
+}
+
+.fooInp::placeholder {
+    background-color: #000;
+    color: #fff
+}
+
+.fooInp:hover {
+    border: 1px solid #fff;
+
+}
+
+.fooButn:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+.foo_social a {
+    color: #fff;
+    padding: 5px;
+    font-size: 18px;
+}
+
+.fooRow {
+    border-bottom: 1px solid #858585;
+}
+
+.payment i {
+    color: #fff;
+    padding: 5px;
+    font-size: 20px;
+}
+
+
+@media screen and (max-width: 990px) {
+
+    .mainSection .rightPart {
+        width: 100% !important;
+    }
+
+    /* section 3 */
+    .mainSection .leftPart,
+    .mainSection .leftPart img {
+        width: 0% !important;
+        display: none;
+    }
+
+    .mainSection {
+        padding: 5px !important;
+    }
+
+    .mainSection h3 {
+        font-size: 18px;
+    }
+}
+
+
+@media screen and (max-width: 762px) {
+
+    .UBTN {
+        text-align: center !important;
+    }
+}
+
+
+@media screen and (max-width: 1218px) {
+
+    .insightController p {
+        font-size: 14px;
+    }
+}
+
+.hiddenInsights {
+    display: none;
+}
+
+.hiddenInsights .row {
+    background-color: #Fff;
+    border-radius: 25px;
+}
+
+@media screen and (max-width: 855px) {
+
+    .insightsResultController {
+       display: none;
+    }
+
+    .insightController {
+        width: auto;
+
+    }
+
+    .hiddenInsights {
+       display: block;
+    }
+
+    .hiddenInsights .row {
+        padding: 5px;
+        justify-content: start !important;
+    }
+}

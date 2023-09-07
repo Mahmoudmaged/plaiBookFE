@@ -1,0 +1,50 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.colorsOpt label {
+    display: block !important;
+}
+
+.showColors {
+    background-color: #343a40; ;
+    color: #fff;
+    margin: 0px;
+    font-size: 16px;
+    /* max-height: 80px; */
+    overflow-y: scroll;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+
+}
+
+.showColorsBorder {
+    border-radius: 10px;
+}
+
+.colorsOpt::-webkit-scrollbar,
+.showColors::-webkit-scrollbar {
+    display: none;
+}
+
+.colorsOpt {
+    background-color: #343a40;
+    color: #fff;
+    display: none;
+    max-height: 200px;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.colorShow {
+    background-color: #663399;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+}

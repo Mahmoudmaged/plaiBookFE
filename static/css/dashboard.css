@@ -1,0 +1,428 @@
+* {
+    overflow-x: hidden;
+    padding: 0px;
+}
+
+body {
+    background-color: black;
+}
+
+p {
+    font-family: 'roboto', sans-serif;
+
+}
+
+a,
+button {
+    font-style: normal !important;
+    font-family: 'IBM Plex Sans', sans-serif !important;
+    font-weight: 500;
+}
+.loading{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    color: #fff;
+    z-index: 111111111111111;
+    display: none;
+}
+
+.loading div{
+    overflow: hidden;
+}
+
+/* NavBar */
+.navbar {
+    position: fixed;
+    background-color: transparent;
+    color: #fff !important;
+    z-index: 1111111111 !important;
+    width: 100%;
+    top: 0;
+}
+.navbar-brand img {
+    width: 120px;
+}
+.nav-link {
+    color: #fff !important;
+}
+
+/* mainSection */
+
+.mainSection {
+    position: relative;
+    background-image: url("../images/FirstPage/landing.png");
+    background-repeat: no-repeat;
+    /* height: 600px; */
+    overflow: hidden;
+}
+
+
+.mainSection .leftPart {
+    background-image: url("../images/Secondpage/ben.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 600px;
+
+}
+
+.mainSection .rightPart h3 {
+    overflow: hidden;
+}
+
+.uploadDiv {
+    background-color: #fff;
+    color: #000;
+    border-radius: 25px;
+    overflow: hidden;
+    width: 75%;
+    margin: auto;
+}
+
+h4 {
+    overflow: hidden;
+}
+
+.uploadInput {
+    background-color: #E9E9E9;
+    border-radius: 25px;
+}
+
+.uploadInput label {
+    cursor: pointer;
+}
+
+.fa-cloud-upload {
+    color: #000;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.styled-checkbox {
+    width: 20px;
+    height: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid #333;
+    /* Border color of the checkbox */
+    border-radius: 4px;
+    /* Rounded corners */
+    outline: none;
+    /* Remove default focus outline */
+    cursor: pointer;
+}
+
+.styled-checkbox:checked {
+    background-color: #663399 !important;
+    /* Change background color when checked */
+    border: 2px solid #663399 !important;
+    /* Change border color when checked */
+}
+
+.formUploadInput {
+    background-color: #E9E9E9;
+    border-radius: 10px;
+    border: 0px;
+    outline: none;
+    width: 100%;
+    padding: 7px;
+    color: #000;
+}
+
+.formUploadInput:focus {
+    outline: none;
+}
+
+.UBTN button {
+    background-color: #663399;
+    color: #fff;
+    font-weight: 500 !important;
+    border-radius: 15px !important;
+    transition: all .5s;
+    font-size: 18px;
+    letter-spacing: 0.8px;
+    font-style: normal !important;
+    font-family: 'IBM Plex Sans', sans-serif !important;
+}
+
+.UBTN button:hover {
+    background-color: #fff;
+    color: #663399;
+    border-color: #663399;
+
+}
+
+.YoutubeURLP {
+    margin-bottom: 5px;
+}
+
+/* .YoutubeURL{
+    margin-top: -15px;
+} */
+/* .YoutubeURL::placeholder {
+    color: #fff;
+} */
+
+/* sectionTwo */
+.sectionTwo span {
+    cursor: pointer;
+    overflow: hidden;
+    background-color: #343a40 !important;
+    color: #fff !important;
+    border: 0px solid #343a40 !important;
+}
+
+/* .sectionTwo .number {
+    margin: 100px;
+} */
+
+.sectionTwo .minus,
+.sectionTwo .plus {
+    width: 20px;
+    height: 30px;
+    background: #f2f2f2;
+    border-radius: 4px;
+    padding: 8px 5px 8px 5px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.sectionTwo .number input {
+    height: 30px;
+    width: 100px;
+    text-align: center;
+    font-size: 26px;
+    border: 0px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #343a40;
+    color: #fff;
+    outline: none;
+}
+
+.sectionTwo .number input:focus {
+    outline: none;
+}
+
+.custom-checkbox span {
+    background-color: transparent !important;
+    color: #333 !important;
+}
+
+.settingRight {
+    border-radius: 20px;
+}
+
+.head {
+    color: #663399;
+    font-weight: 900;
+    font-size: 25px
+}
+
+.startProcessingBtn {
+    background-color: #663399;
+    color: #fff;
+    transition: all .5s;
+    font-weight: 500 !important;
+    border-radius: 15px !important;
+    transition: all .5s;
+    font-size: 18px;
+    letter-spacing: 0.8px;
+    font-style: normal !important;
+    font-family: 'IBM Plex Sans', sans-serif !important;
+}
+
+.startProcessingBtn:hover {
+    background-color: #fff;
+    border: 1px solid #663399;
+    color: #663399;
+}
+
+
+
+
+.dropbtn {
+    background-color: #343a40;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #343a40;
+    color: #fff;
+}
+
+.dropdown-content label {
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-content label:hover {
+    background-color: #ddd;
+}
+
+.selected-colors {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.selected-colors p {
+    font-weight: bold;
+}
+
+.selected-colors ul {
+    list-style: none;
+    padding: 0;
+}
+
+/*Footer*/
+.footer {
+    background-image: url("../images/FirstPage/footer.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+
+}
+
+.footer h5 {
+    overflow: hidden;
+}
+
+.footer a,
+.footer a:hover,
+.footer p,
+.footer li {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+
+.fooInp {
+    width: 60%;
+    height: 35px;
+    border: 1px solid #858585;
+    padding: 5px;
+    outline: none;
+    background-color: #000;
+    color: #fff;
+}
+
+.fooButn {
+    border: 1px solid #fff;
+    padding: 5px 10px;
+    outline: none;
+    background-color: #000;
+    color: #Fff
+}
+
+.fooInp::placeholder {
+    background-color: #000;
+    color: #fff
+}
+
+.fooInp:hover {
+    border: 1px solid #fff;
+
+}
+
+.fooButn:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+.foo_social a {
+    color: #fff;
+    padding: 5px;
+    font-size: 18px;
+}
+
+.fooRow {
+    border-bottom: 1px solid #858585;
+}
+
+.payment i {
+    color: #fff;
+    padding: 5px;
+    font-size: 20px;
+}
+
+
+@media screen and (max-width: 990px) {
+
+    .mainSection .rightPart {
+        width: 100% !important;
+    }
+
+    /* section 3 */
+    .mainSection .leftPart,
+    .mainSection .leftPart img {
+        width: 0% !important;
+        display: none;
+    }
+
+    .mainSection {
+        padding: 5px !important;
+    }
+
+    .mainSection h3 {
+        font-size: 18px;
+    }
+}
+
+
+@media screen and (max-width: 762px) {
+
+    .UBTN {
+        text-align: center !important;
+    }
+}
+
+@media screen and (max-width: 912px) {
+
+
+    .imageSettingPart {
+        width: 0% !important;
+    }
+}
+
+@media screen and (max-width: 700px) {
+
+
+    .uploadDiv {
+        width: 90%;
+    }
+
+
+    .sectionTwo .number input {
+        height: 30px;
+        width: 50px;
+    }
+
+    .custom-checkbox span {
+
+        font-size: 14px !important;
+    }
+}

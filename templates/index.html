@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'node_modules/bootstrap/dist/css/bootstrap.min.css') }}" />
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:ital,wght@0,100;1,500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/index.css') }}" />
+
+    <title>PlaiBook</title>
+  </head>
+  <body class="">
+    <nav class="navbar navbar-expand-lg navbar-light text-light">
+      <a class="navbar-brand p-2" href="/"><img src="{{ url_for('static', filename = 'images/FirstPage/logo.png') }}" alt="" srcset="" class="img-fluid" /></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto text-light">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">HOME <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" aria-disabled="true">TEAMS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">CONTACT US</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="mainSection w-100">
+      <div class="row align-items-center mainRow">
+        <div class="col-6 leftPart text-light">
+          <div class="row p-2 justify-content-center align-items-center w-100 text-center">
+            <div class="col-12 text-center">
+              <div class="mainTitle ps-5">
+                <h2 class="title">NEW SEASON</h2>
+                <h2 class="">NEW ANALYSIS!</h2>
+                <p class="my-2">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error incidunt, id vel illo sequi recusandae a neque sunt natus, quod rerum ullam sint veritatis. Est fugit maiores nemo facere quisquam!</p>
+
+                <div class="text-start my-2">
+                  <a href="/dashboard" class="btn px-3 py-2 getStartBTN">GET STARTED</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 rightPart">
+          <div class="row align-items-center h-100">
+            <div class="col-12 rightPart-Col">
+              <img class="img-fluid" src=" {{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
+              <div class="caption text-light">
+                <div class="p-5 captionContent">
+                  <h3>PLAYER <span class="">PROFILE</span></h3>
+                  <h3 class="ms-2">JON DOE - <span class="ms-1">23</span></h3>
+
+                  <p class="p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. A, reiciendis? Sapiente dolor voluptatem tempore molestias qui repudiandae alias nulla ratione quis iste molestiae, tempora voluptatum ad, distinctio id ipsum quos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="player">
+          <img class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/dsfs.png') }}" alt="" srcset="" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mainSection-footer">
+      <img src="{{ url_for('static', filename = 'images/FirstPage/1shape.png') }}" alt="" />
+    </div>
+    <div class="sectionTwo">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-4 col-md-6 leftPart text-center">
+          <img class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/pexels-thomas-ronveaux-13140930.png') }}" alt="" srcset="" />
+        </div>
+        <div class="col-8 col-md-6 rightPart">
+          <div class="caption text-light">
+            <h3>WE <span class="">CALCULATE</span></h3>
+            <h3>EVERYTHING</h3>
+            <p class="p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. A, reiciendis? Sapiente dolor voluptatem tempore molestias qui repudiandae alias nulla ratione quis iste molestiae, tempora voluptatum ad, distinctio id ipsum quos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sectionTwo-footer">
+      <img src="{{ url_for('static', filename = 'images/FirstPage/2shape.png') }}" alt="" />
+    </div>
+
+    <div class="sectionThree text-light">
+      <div class="container">
+        <div class="row justify-content-center align-items-center text-center p-5 my-5">
+          <div class="col-12">
+            <div class="caption">
+              <h3>GET YOUR</h3>
+              <h3><span>REAL-TIME </span>ANALYSIS.</h3>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 my-2">
+            <div class="p-2">
+              <div class="content m-auto">
+                <h4>SPEED ANALYSIS</h4>
+                <p class="my-2">Analysis all the data and make smarter.</p>
+
+                <img src="{{ url_for('static', filename = 'images/FirstPage/Speed.png') }}" alt="" srcset="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 my-2">
+            <div class="p-2">
+              <div class="content m-auto">
+                <h4>ZONE ANALYSIS</h4>
+                <p class="my-2">Analysis all the data and make smarter.</p>
+
+                <img src="{{ url_for('static', filename = 'images/FirstPage/Zone.png') }}" srcset="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 my-2">
+            <div class="p-2">
+              <div class="content m-auto">
+                <h4>HEAT MAPS</h4>
+                <p class="my-2">Analysis all the data and make smarter.</p>
+
+                <img src="{{ url_for('static', filename = 'images/FirstPage/Heat.png') }}" alt="" srcset="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 my-2">
+            <div class="p-2">
+              <div class="content m-auto">
+                <h4>AI ENHANCING</h4>
+                <p class="my-2">Analysis all the data and make smarter.</p>
+
+                <img src="{{ url_for('static', filename = 'images/FirstPage/AI.png') }}" alt="" srcset="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ 
+    <section class="footer pt-5 text-light">
+      <div class="fooRow py-3">
+        <div class="p-5">
+          <div class="row">
+            <div class="row">
+              <div class="col-md-5 mt-2">
+                <a href="/"><img src="{{ url_for('static', filename = 'images/FirstPage/Logo.png') }}" alt="" srcset="" /></a>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi praesentium obcaecati temporibus delectus vero ex dicta maxime quaerat. Possimus ea ducimus nisi consectetur officia perferendis alias excepturi pariatur optio rerum!</p>
+              </div>
+
+              <div class="col-md-2 mt-2">
+                <h5>Company</h5>
+                <ul class="list-unstyled">
+                  <a href="aboutUs.html"><li>About Us</li></a>
+                  <a href="contact.html"><li>Contact</li></a>
+                </ul>
+              </div>
+
+              <div class="col-md-2 mt-2">
+                <h5>FQA</h5>
+                <ul class="list-unstyled">
+                  <a href="index.html"><li>Terms</li></a>
+                  <a href="index.html"><li>Privacy</li></a>
+                  <a href="index.html"><li>Blog</li></a>
+                </ul>
+              </div>
+              <div class="col-md-3 mt-2">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                  <li class="foocart">Phone:01142951602</li>
+                  <li class="whisLIst">Email:mahmoudelwan460@gmail.com</li>
+                  <li class="whisLIst">Address:407 omer ibn khttab</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container py-2 text-center">
+        <i class="fa fab-facebook" aria-hidden="true"></i>
+        <span class="px-2 w-100">©<script>
+                                    document.write(new Date().getFullYear())
+                                  </script>All Rights Reserved.</span>
+      </div>
+    </section>
+
+    <script src="{{ url_for('static', filename = 'node_modules/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'node_modules/@popperjs/core/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/bootstrap/dist/js/all.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/index.js') }}"></script>
+  </body>
+</html>
