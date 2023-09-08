@@ -274,7 +274,10 @@ $('.plus').click(function () {
     return false;
 });
 //connect socket
-const socket = io.connect('http://' + Document.domain + ':' + location.port);
+const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+socket.emit("testConnection" , "lolllll")
+
 
 //upload record
 $(".uploadBtn").on("click", function () {

@@ -21,5 +21,11 @@ def indexResult():
     return render_template('result.html')
 
 
+
+@socketio.on('testConnection')
+def testSocket(data):
+
+    print(data)
+
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=80, debug=False)
