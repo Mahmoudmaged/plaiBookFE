@@ -29,7 +29,7 @@ $(".insightController").on("click", function () {
     $(`.${showSection}`).show(1000).delay(500)
 })
 // Communication Part
-const socket = io.connect('http://' + Document.domain + ':' + location.port);
+const socket = io.connect('http://' + document.domain + ':' + location.port);
 // Advanced setting
 function checkAdvanced() {
     const dict = JSON.parse(localStorage.getItem("processDict"));
