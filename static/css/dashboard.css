@@ -37,6 +37,18 @@ button {
     overflow: hidden;
 }
 
+.sideAlert {
+    background-color: #663399;
+    color: #fff;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    position: fixed;
+    right: -100%;
+    top: 10%;
+    padding: 10px 20px;
+    transition: all 1s;
+    z-index: 9999999999999;
+}
 /* NavBar */
 .navbar {
     position: fixed;

@@ -1,6 +1,13 @@
 
 localStorage.removeItem("processDict")
 
+function sideAlert(message) {
+    $(".sideAlert").text(message)
+    $(".sideAlert").css({ "right": "0%" })
+    setTimeout(() => {
+        $(".sideAlert").css({ "right": "-200%" })
+    }, 5000);
+}
 $(window).scroll(function () {
     let scrollTop = $(window).scrollTop();
     if (scrollTop >= 70) {
@@ -282,9 +289,8 @@ function uploadVideo() {
     const videoFile = document.getElementById('fileVideo').files[0];
     if (!$('.emailAddress').val()) {
         $(".loading").hide()
-        alert("Please enter  your email.")
-    }
-    if (videoFile) {
+        sideAlert("Please enter  your email.")
+    } else if (videoFile) {
         const formData = new FormData();
         formData.append('video', videoFile);
         fetch('/upload', {
@@ -300,7 +306,8 @@ function uploadVideo() {
         $(window).scrollTop($(".sectionTwo").offset().top)
     } else {
         $(".loading").hide()
-        alert("Please upload your video or put YouTube link.")
+        sideAlert("Please upload your video or put YouTube link.")
+
     }
 }
 //start analysis.
@@ -313,12 +320,16 @@ $(".startProcessingBtn").on("click", function () {
 function startProcessing() {
     $(".loading").show()
 
-    if (!uploadedVideoPath && !$(".YoutubeURL").val()) {
+    if (!$('.emailAddress').val()) {
         $(".loading").hide()
-        alert("Please upload your video or put YouTube link.")
+        sideAlert("Please enter  your email.")
+    } else if (!uploadedVideoPath && !$(".YoutubeURL").val()) {
+        $(".loading").hide()
+        sideAlert("Please upload your video or put YouTube link.")
     } else if (!lt.length || !rt.length || !referer.length) {
         $(".loading").hide()
-        alert("Please select teams colors")
+        sideAlert("Please select teams colors")
+
     } else {
         const dict = {
             path: uploadedVideoPath,
