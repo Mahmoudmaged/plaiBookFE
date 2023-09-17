@@ -179,7 +179,7 @@ const colorsList = ["Dark Blue",
     "green",
     "red",
     "white",
-    "yellow",]
+    "yellow","black"]
 for (const color of colorsList) {
     cartoonaOne += ` <label><input class="selectedColor" type="checkbox" value="${color}"> ${color}</label>`;
     $(".colorsOpt").html(cartoonaOne)
@@ -347,10 +347,11 @@ function startProcessing() {
             left_team_color: lt,
             right_team_color: rt,
             ref_color: referer,
-            heatMaps: $("#heatMapsInput").is(":checked") ? $("#heatMapsInput").val() : null,
-            zoneAnalysis: $("#zoneAnalysisInput").is(":checked") ? $("#zoneAnalysisInput").val() : null,
-            speedAnalysis: $("#speedAnalysisInput").is(":checked") ? $("#speedAnalysisInput").val() : null,
-            textAnalysis: $("#textAnalysisInput").is(":checked") ? $("#textAnalysisInput").val() : null
+            show_heatmap: $("#heatMapsInput").is(":checked") ? $("#heatMapsInput").val() : null,
+            show_zone_analysis: $("#zoneAnalysisInput").is(":checked") ? $("#zoneAnalysisInput").val() : null,
+            show_speed_analysis: $("#speedAnalysisInput").is(":checked") ? $("#speedAnalysisInput").val() : null,
+            show_text_analysis: $("#textAnalysisInput").is(":checked") ? $("#textAnalysisInput").val() : null,
+            show_distance: $("#showDistanceInput").is(":checked") ? $("#showDistanceInput").val() : null,
         }
         localStorage.setItem("processDict", JSON.stringify(dict))
         socket.emit('start_processing', dict);

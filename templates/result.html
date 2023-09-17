@@ -30,10 +30,11 @@
     </nav>
 
     <div class="mainSection text-light p-5">
-      <div class="container p-5 my-3">
+      <div class="container text-center p-5 my-3">
         <!-- Canvas for Processed Video Frame -->
         <div id="highlight_status" class="alert border-danger text-start" style="color: red;">njklhoihji</div>
-        <canvas id="videoCanvas"></canvas>
+        <canvas id="videoCanvas" width="640" height="480"></canvas>
+<!--        <img id="videoCanvas" width="640" height="480" alt="video frames" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}"></img>-->
         <div class="moreInsights">
           <p class="mt-2">More Insights</p>
         </div>
@@ -66,27 +67,7 @@
             <p>AI Enhancement</p>
           </div>
         </div>
-        <div class="col-12 hiddenInsights">
-          <div class="row justify-content-center">
-            <div id="heatMaps" class="mt-1 insightController col-2 insightControllerActive">
-              <p>HeatMaps</p>
-            </div>
 
-            <div id="zone" class="mt-1 insightController col-2">
-              <p>Zone Analysis</p>
-            </div>
-            <div id="speed" class="mt-1 insightController col-2">
-              <p>Speed Analysis</p>
-            </div>
-
-            <div id="text" class="mt-1 insightController col-2">
-              <p>Text Analysis</p>
-            </div>
-            <div id="ai" class="mt-1 insightController col-2">
-              <p>AI Enhancement</p>
-            </div>
-          </div>
-        </div>
         <div class="col-10 p-3 text-center">
           <div class="heatMaps">
             <div class="row align-items-center text-center text-light">
@@ -199,14 +180,8 @@
             <div class="row align-items-center text-center text-light">
               <div class="col-12 mt-2">
                 <div class="p-2 addLight">
-                  <p class="text-start">Left Team</p>
-                  <p id="aiEnhancementText">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.
-
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.
-
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.
-
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.</p>
+<!--                  <p class="text-start">Left Team</p>-->
+                  <p id="aiEnhancementText">AI response is loading ..., please wait</p>
                 </div>
               </div>
             </div>

@@ -1,0 +1,585 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Video Streamer</title>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: 'Arial', sans-serif;-->
+<!--            background-color: #f3f4f6;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            height: 100vh;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            background-color: #fff;-->
+<!--            padding: 20px;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--            width: 80%;-->
+<!--            max-width: 800px;-->
+<!--        }-->
+
+<!--        .button, select, input[type="file"] {-->
+<!--            padding: 10px 15px;-->
+<!--            margin: 10px 0;-->
+<!--            border: none;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s ease;-->
+<!--        }-->
+
+<!--        .button:hover {-->
+<!--            background-color: #ddd;-->
+<!--        }-->
+
+<!--        .info {-->
+<!--            margin-top: 20px;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+
+<!--        #videoCanvas {-->
+<!--            border: 1px solid black;-->
+<!--            background-color: #000;-->
+<!--            display: block;-->
+<!--            margin: 20px auto;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="container">-->
+<!--    &lt;!&ndash; Video Upload Section &ndash;&gt;-->
+<!--    <input type="file" id="videoUpload">-->
+<!--    <button onclick="uploadVideo()">Upload Video</button>-->
+<!--    <br>-->
+
+<!--    &lt;!&ndash; Start Processing Button &ndash;&gt;-->
+<!--    <button class="button" onclick="startProcessing()">Start Processing</button>-->
+<!--    <br>-->
+
+<!--    &lt;!&ndash; Canvas for Processed Video Frame &ndash;&gt;-->
+<!--    <canvas id="videoCanvas" width="640" height="480"></canvas>-->
+<!--    <br>-->
+
+<!--&lt;!&ndash; Advanced Settings &ndash;&gt;-->
+<!--    <fieldset>-->
+<!--        <legend>Advanced Settings</legend>-->
+<!--        <label><input type="checkbox" id="show_heatmaps" onclick="show_heatmap_images()"> Show Heatmaps</label>-->
+<!--        <label><input type="checkbox" id="show_zone_analysis" onclick="show_zone_analysis_images()"> Show Zone Analysis</label>-->
+<!--        <label><input type="checkbox" id="show_speed_analysis" onclick="show_speed_images()"> Show speed Analysis</label>-->
+<!--        <label><input type="checkbox" id="show_text_analysis" onclick="show_text_analysis()"> Show Text Analysis</label>-->
+<!--    </fieldset>-->
+
+<!--    &lt;!&ndash; Get Variant Image Button &ndash;&gt;-->
+<!--    <br>-->
+<!--    <img id="left_team_heatmap" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="right_team_heatmap" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="ref_heatmap" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="left_team_zone_analysis" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="right_team_zone_analysis" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="ref_analysis" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="left_team_speed_heatmap" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="right_team_speed_heatmap" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="left_team_players_speed" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <img id="right_team_players_speed" alt="Variant Image" width="320">-->
+<!--    <br>-->
+<!--    <div id="text_analysis" class="info"></div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    const socket = io.connect('http://' + document.domain + ':' + location.port);-->
+
+<!--    let uploadedVideoPath = null;-->
+
+<!--    function uploadVideo() {-->
+<!--        const videoFile = document.getElementById('videoUpload').files[0];-->
+<!--        const formData = new FormData();-->
+<!--        formData.append('video', videoFile);-->
+
+<!--        fetch('/upload', {-->
+<!--            method: 'POST',-->
+<!--            body: formData-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            uploadedVideoPath = data.path;-->
+<!--        });-->
+<!--    }-->
+
+<!--    function startProcessing() {-->
+<!--        socket.emit('start_processing', { path: uploadedVideoPath,});-->
+<!--    }-->
+
+<!--    function show_text_analysis() {-->
+<!--        const show_text_analysis = document.getElementById('show_text_analysis').checked;-->
+<!--        socket.emit('show_text_analysis', { show_text_analysis: show_text_analysis });-->
+<!--    }-->
+
+<!--    function show_speed_images() {-->
+<!--    // Get the checkbox's status and send it to the server-->
+<!--    const show_speed_analysis = document.getElementById('show_speed_analysis').checked;-->
+<!--    socket.emit('show_speed_images', { show_speed_analysis: show_speed_analysis });-->
+<!--    if (!show_speed_analysis) {-->
+<!--        document.getElementById('left_team_speed_heatmap').src = '';-->
+<!--        document.getElementById('right_team_speed_heatmap').src = '';-->
+<!--        document.getElementById('right_team_players_speed').src = '';-->
+<!--        document.getElementById('left_team_players_speed').src = '';-->
+<!--    }-->
+<!--    }-->
+<!--    function show_heatmap_images() {-->
+<!--    // Get the checkbox's status and send it to the server-->
+<!--    const show_heatmaps = document.getElementById('show_heatmaps').checked;-->
+<!--    socket.emit('show_heatmap_images', { show_heatmap: show_heatmaps });-->
+<!--    if (!show_heatmaps) {-->
+<!--        document.getElementById('left_team_heatmap').src = '';-->
+<!--        document.getElementById('right_team_heatmap').src = '';-->
+<!--        document.getElementById('ref_heatmap').src = '';-->
+<!--    }-->
+<!--    }-->
+<!--    function show_zone_analysis_images() {-->
+<!--    // Get the checkbox's status and send it to the server-->
+<!--    const show_zone_analysis = document.getElementById('show_zone_analysis').checked;-->
+<!--    socket.emit('show_zone_analysis', { show_zone_analysis: show_zone_analysis });-->
+<!--    if (!show_zone_analysis) {-->
+<!--        document.getElementById('left_team_zone_analysis').src = '';-->
+<!--        document.getElementById('right_team_zone_analysis').src = '';-->
+<!--        document.getElementById('ref_analysis').src = '';-->
+<!--    }-->
+<!--    }-->
+
+<!--    const canvas = document.getElementById('videoCanvas');-->
+<!--    const ctx = canvas.getContext('2d');-->
+
+<!--    socket.on('new_frame', function(data) {-->
+<!--        const img = new Image();-->
+<!--        img.onload = function() {-->
+<!--            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);-->
+<!--        };-->
+<!--        img.src = data.image;-->
+<!--    });-->
+
+<!--    socket.on('text_analysis', function(data) {-->
+<!--        document.getElementById('text_analysis').innerText =data.text_analysis;-->
+<!--    });-->
+
+<!--    socket.on('variant_image_response', function(data) {-->
+<!--        document.getElementById('variantImage').src = data.image;-->
+<!--    });-->
+<!--    // speed events-->
+<!--    socket.on('left_team_speed_heatmap', function(data) {-->
+<!--        document.getElementById('left_team_speed_heatmap').src = data.image;-->
+<!--    });-->
+<!--    socket.on('right_team_speed_heatmap', function(data) {-->
+<!--        document.getElementById('right_team_speed_heatmap').src = data.image;-->
+<!--    });-->
+<!--    socket.on('left_team_players_speed', function(data) {-->
+<!--        document.getElementById('left_team_players_speed').src = data.image;-->
+<!--    });-->
+<!--    socket.on('right_team_players_speed', function(data) {-->
+<!--        document.getElementById('right_team_players_speed').src = data.image;-->
+<!--    });-->
+<!--    // heatmaps events-->
+<!--    socket.on('left_team_heatmap', function(data) {-->
+<!--        document.getElementById('left_team_heatmap').src = data.image;-->
+<!--    });-->
+<!--    socket.on('right_team_heatmap', function(data) {-->
+<!--        document.getElementById('right_team_heatmap').src = data.image;-->
+<!--    });-->
+<!--    socket.on('ref_heatmap', function(data) {-->
+<!--        document.getElementById('ref_heatmap').src = data.image;-->
+<!--    });-->
+<!--    // zone analysis events-->
+<!--    socket.on('left_team_zone_analysis', function(data) {-->
+<!--        document.getElementById('left_team_zone_analysis').src = data.image;-->
+<!--    });-->
+<!--    socket.on('right_team_zone_analysis', function(data) {-->
+<!--        document.getElementById('right_team_zone_analysis').src = data.image;-->
+<!--    });-->
+<!--    socket.on('ref_analysis', function(data) {-->
+<!--        document.getElementById('ref_analysis').src = data.image;-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLAIBOOK beta</title>
+    <link rel="icon" href="Config/Video_images/page_icon.jpeg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .button,
+        select,
+        input[type="file"] {
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #ddd;
+        }
+
+        .info {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        #videoCanvas {
+            border: 1px solid black;
+            background-color: #000;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .scrollable {
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 60px;
+            font-weight: bold;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .center-text {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>PLaiBOOK beta</h1>
+    <!-- Settings -->
+
+    <div class="container">
+        <fieldset>
+            <legend>Settings</legend>
+            <!-- Upload Video Files locally -->
+            <h2>Upload Video Files locally</h2>
+            <input type="file" accept=".mp4,.mkv,.avi" id="videoUpload">
+            <button onclick="uploadVideo()">Upload Video</button>
+            <!-- YouTube URL / Live Stream -->
+            <h2>Or put a YouTube URL / Live Stream</h2>
+            <input type="text" placeholder="Filename or YouTube URL / Live Stream:" value="CityUtdR.mp4" id="url">
+            <br>
+            <label><input type="checkbox" id="youtube"> Youtube</label>
+            <label><input type="checkbox" checked id="show_distance"> Show distances</label>
+            <br>
+            <h5>Email</h5>
+            <input type="text" placeholder="Email address to send results to:" value="keroatef295@gmail.com" id="email">
+
+            <!-- Match Setup -->
+            <h2>Match Setup</h2>
+            <div>Match Start Time</div>
+            Hour: <input type="number" min="0" max="2" value="0" id='start_time_hour'>
+            Minute: <input type="number" min="0" max="59" value="0" id='start_time_min'>
+            Second: <input type="number" min="0" max="59" value="0" id='start_time_sec'>
+
+            <div>Analysis Time</div>
+            Hour: <input type="number" min="0" max="2" value="0" id='analysis_time_hour'>
+            Minute: <input type="number" min="0" max="59" value="0" id='analysis_time_min'>
+            Second: <input type="number" min="0" max="59" value="0" id='analysis_time_sec'>
+
+            <!-- Team Colors -->
+            <h2>Determine Teams Color</h2>
+            <!-- Assuming drop-down for simplicity. Replace with multi-select as needed -->
+            Left Team Color: <select id="left_team_color">
+                <option>Light Blue</option>
+                <option>Dark Blue</option>
+                <option>Dark Red</option>
+                <option>black</option>
+                <option>blue</option>
+                <option>green</option>
+                <option>red</option>
+                <option>white</option>
+                <option>yellow</option>
+                <!-- Add other options here -->
+            </select>
+            Right Team Color: <select id="right_team_color">
+                <option>red</option>
+                <option>Dark Blue</option>
+                <option>Dark Red</option>
+                <option>Light Blue</option>
+                <option>black</option>
+                <option>blue</option>
+                <option>green</option>
+                <option>white</option>
+                <option>yellow</option>
+            </select>
+            Referee Color: <select id="ref_color">
+                <option>black</option>
+                <option>Dark Blue</option>
+                <option>Dark Red</option>
+                <option>Light Blue</option>
+                <option>blue</option>
+                <option>green</option>
+                <option>red</option>
+                <option>white</option>
+                <option>yellow</option>
+                <!-- Add other options here -->
+            </select>
+        </fieldset>
+
+        <!-- Advanced Settings -->
+        <fieldset>
+            <legend>Advanced Settings</legend>
+            <label><input type="checkbox" id="show_heatmaps" onclick="show_heatmap_images()"> Show Heatmaps</label>
+            <label><input type="checkbox" id="show_zone_analysis" onclick="show_zone_analysis_images()"> Show Zone
+                Analysis</label>
+            <label><input type="checkbox" id="show_speed_analysis" onclick="show_speed_images()"> Show speed
+                Analysis</label>
+            <label><input type="checkbox" id="show_text_analysis" onclick="show_text_analysis()"> Show Text
+                Analysis</label>
+        </fieldset>
+        <!-- Start Processing Button -->
+        <button class="button" onclick="startProcessing()">Start Processing</button>
+        <br>
+
+        <!-- Canvas for Processed Video Frame -->
+        <div id="highlight_status" class="info" style="color: red;"></div>
+        <canvas id="videoCanvas" width="640" height="480"></canvas>
+        <br>
+
+
+        <!-- Scrollable content -->
+        <div class="scrollable">
+            <!-- Get Variant Image Button -->
+            <br>
+            <h4>Heatmaps</h4>
+            <img id="left_team_heatmap" alt="Variant Image" width="320">
+            <img id="right_team_heatmap" alt="Variant Image" width="320">
+            <img id="ref_heatmap" alt="Variant Image" width="320">
+            <br>
+            <h4>Zone Analysis</h4>
+            <img id="left_team_zone_analysis" alt="Variant Image" width="320">
+            <img id="right_team_zone_analysis" alt="Variant Image" width="320">
+            <img id="ref_analysis" alt="Variant Image" width="320">
+            <br>
+            <h4>Teams Speed heatmaps</h4>
+            <img id="left_team_speed_heatmap" alt="Variant Image" width="320">
+            <img id="right_team_speed_heatmap" alt="Variant Image" width="320">
+            <br>
+            <h4>Player's Speed Analysis</h4>
+            <img id="left_team_players_speed" alt="Variant Image" width="320">
+            <img id="right_team_players_speed" alt="Variant Image" width="320">
+            <br>
+            <div id="text_analysis" class="info"></div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+        // create a global array to store the images
+        let videoFrames = [];
+        let lastFrame = 0;
+        let uploadedVideoPath = null;
+
+        function uploadVideo() {
+            const videoFile = document.getElementById('videoUpload').files[0];
+            const formData = new FormData();
+            formData.append('video', videoFile);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    uploadedVideoPath = data.path;
+                });
+        }
+
+        function startProcessing() {
+            const url = document.getElementById('url').value;
+            const youtube = document.getElementById('youtube').checked;
+            const show_distance = document.getElementById('show_distance').checked;
+            const email = document.getElementById('email').value;
+            const start_time_hour = document.getElementById('start_time_hour').value;
+            const start_time_min = document.getElementById('start_time_min').value;
+            const start_time_sec = document.getElementById('start_time_sec').value;
+            const analysis_time_hour = document.getElementById('analysis_time_hour').value;
+            const analysis_time_min = document.getElementById('analysis_time_min').value;
+            const analysis_time_sec = document.getElementById('analysis_time_sec').value;
+            const left_team_color = document.getElementById('left_team_color').value;
+            const right_team_color = document.getElementById('right_team_color').value;
+            const ref_color = document.getElementById('ref_color').value;
+            const dict = {
+                path: uploadedVideoPath, youtube_url: '', youtube: false,
+                show_distance: show_distance, email: email, start_time_hour: start_time_hour, start_time_min: start_time_min,
+                start_time_sec: start_time_sec, analysis_time_hour: analysis_time_hour, analysis_time_min: analysis_time_min,
+                analysis_time_sec: analysis_time_sec, left_team_color: left_team_color, right_team_color: right_team_color,
+                ref_color: ref_color,
+                 show_heatmap: true,
+            show_zone_analysis: true,
+            show_speed_analysis:true ,
+            show_text_analysis: true,
+            }
+            socket.emit('start_processing', dict);
+        }
+
+        function show_text_analysis() {
+            const show_text_analysis = document.getElementById('show_text_analysis').checked;
+            socket.emit('show_text_analysis', { show_text_analysis: show_text_analysis });
+        }
+
+        function show_speed_images() {
+            // Get the checkbox's status and send it to the server
+            const show_speed_analysis = document.getElementById('show_speed_analysis').checked;
+            socket.emit('show_speed_images', { show_speed_analysis: show_speed_analysis });
+            if (!show_speed_analysis) {
+                document.getElementById('left_team_speed_heatmap').src = '';
+                document.getElementById('right_team_speed_heatmap').src = '';
+                document.getElementById('right_team_players_speed').src = '';
+                document.getElementById('left_team_players_speed').src = '';
+            }
+        }
+        function show_heatmap_images() {
+            // Get the checkbox's status and send it to the server
+            const show_heatmaps = document.getElementById('show_heatmaps').checked;
+            socket.emit('show_heatmap_images', { show_heatmap: show_heatmaps });
+            if (!show_heatmaps) {
+                document.getElementById('left_team_heatmap').src = '';
+                document.getElementById('right_team_heatmap').src = '';
+                document.getElementById('ref_heatmap').src = '';
+            }
+        }
+        function show_zone_analysis_images() {
+            // Get the checkbox's status and send it to the server
+            const show_zone_analysis = document.getElementById('show_zone_analysis').checked;
+            socket.emit('show_zone_analysis', { show_zone_analysis: show_zone_analysis });
+            if (!show_zone_analysis) {
+                document.getElementById('left_team_zone_analysis').src = '';
+                document.getElementById('right_team_zone_analysis').src = '';
+                document.getElementById('ref_analysis').src = '';
+            }
+        }
+
+        const canvas = document.getElementById('videoCanvas');
+        const ctx = canvas.getContext('2d');
+
+        socket.on('new_frame', function (data) {
+            const img = new Image();
+            // append the recieved image (data)to the array videoFrames
+            videoFrames.push(data.image);
+            // check if the length of the array is divisable by 64 frames
+            // if so, start displaying the frames in the canvas else do nothing
+            if (videoFrames.length % 32 === 0) {
+                var i = lastFrame;                  //  set your counter to 1
+                function myLoop() {         //  create a loop function
+                    setTimeout(function () {   //  call a 0.2 setTimeout when the loop is called
+                        img.onload = function () {
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        };
+                        img.src = videoFrames[i];   //  your code here
+                        lastFrame++;
+                        i++;                    //  increment the counter
+                        if (i < videoFrames.length) {           //  if the counter < 10, call the loop function
+                            myLoop();             //  ..  again which will trigger another
+                        }                       //  ..  setTimeout()
+                    }, 200)
+                }
+                myLoop();
+            }
+        });
+
+        socket.on('text_analysis', function (data) {
+            document.getElementById('text_analysis').innerText = data.text_analysis;
+        });
+
+        socket.on('variant_image_response', function (data) {
+            document.getElementById('variantImage').src = data.image;
+        });
+        // speed events
+        socket.on('left_team_speed_heatmap', function (data) {
+            document.getElementById('left_team_speed_heatmap').src = data.image;
+        });
+        socket.on('right_team_speed_heatmap', function (data) {
+            document.getElementById('right_team_speed_heatmap').src = data.image;
+        });
+        socket.on('left_team_players_speed', function (data) {
+            document.getElementById('left_team_players_speed').src = data.image;
+        });
+        socket.on('right_team_players_speed', function (data) {
+            document.getElementById('right_team_players_speed').src = data.image;
+        });
+        // heatmaps events
+        socket.on('left_team_heatmap', function (data) {
+            document.getElementById('left_team_heatmap').src = data.image;
+        });
+        socket.on('right_team_heatmap', function (data) {
+            document.getElementById('right_team_heatmap').src = data.image;
+        });
+        socket.on('ref_heatmap', function (data) {
+            document.getElementById('ref_heatmap').src = data.image;
+        });
+        // zone analysis events
+        socket.on('left_team_zone_analysis', function (data) {
+            document.getElementById('left_team_zone_analysis').src = data.image;
+        });
+        socket.on('right_team_zone_analysis', function (data) {
+            document.getElementById('right_team_zone_analysis').src = data.image;
+        });
+        socket.on('ref_analysis', function (data) {
+            document.getElementById('ref_analysis').src = data.image;
+        });
+        socket.on('highlight_status', function (data) {
+            document.getElementById('highlight_status').innerText = data.text;
+        });
+    // Other functions...
+
+    </script>
+
+</body>
+
+</html>
