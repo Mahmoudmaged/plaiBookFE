@@ -1,4 +1,7 @@
 
+let uploadedVideoPath = null;
+const {path} = JSON.parse(localStorage.getItem("processDict"))
+uploadedVideoPath = path ? path : null;
 
 localStorage.removeItem("processDict")
 
@@ -291,7 +294,6 @@ $(".uploadBtn").on("click", function () {
 })
 
 
-let uploadedVideoPath = null;
 
 function uploadVideo() {
     $(".loading").show()

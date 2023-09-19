@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename = 'node_modules/bootstrap/dist/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/result.css') }}" />
     <title>PlaiBook</title>
   </head>
@@ -29,39 +30,68 @@
       </div>
     </nav>
 
-    <div class="mainSection text-light p-5">
+    <div class="mainSection text-light p-5 mt-5">
       <div class="container text-center p-5 my-3">
-             <div id="highlight_status" class="alert border-danger text-start" style="color: red;"></div>
-                <canvas id="videoCanvas" width="1280" height="720"></canvas>
-                <div class="videoEdit">
-                  <div class="row  align-items-center">
-                    <div class="my-2 col-4 p-2">
-                      <div class="row">
-                        <div class="col-4">
-                          <i class="fa fa-backward" aria-hidden="true"></i>
-                        </div>
-                        <div class="col-4">
-                          <i class="fa fa-play" aria-hidden="true"></i>
-                          <i class="fa fa-pause"   aria-hidden="true"></i>
-                        </div>
+          <div class="row ">
+              <div class="col-12">
 
-                        <div class="col-4">
-                          <i class="fa fa-forward" aria-hidden="true"></i>
-                        </div>
+                  <div id="highlight_status" class="alert border-danger text-start" style="color: red;"></div>
+
+                  <div  class="row">
+                      <div class="col-1  vv">
+                          <div class="progressUp  progress-bar-striped">
+                              0%
+                          </div>
                       </div>
-                    </div>
-                    <div class="my-2 col-8 ">
-                      <input class="w-100 rangeInput" type="range" id="volume" name="volume" min="0" max="284" value="0" />
-                    </div>
+                      <div class="col-11"  id="kk">
+                         <canvas id="videoCanvas"></canvas>
+                      </div>
+                      <div  class="col-1"></div>
+                       <div class="col-11">
+                           <div class="videoEdit">
+                                  <div class="row  align-items-center">
+                                    <div class="my-2 col-4 p-2">
+                                      <div class="row">
+                                        <div class="col-4">
+                                          <i class="fa fa-backward" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-4">
+                                          <i class="fa fa-play" aria-hidden="true"></i>
+                                          <i class="fa fa-pause"   aria-hidden="true"></i>
+                                        </div>
+
+                                        <div class="col-4">
+                                          <i class="fa fa-forward" aria-hidden="true"></i>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="my-2 col-8 ">
+                                      <input class="w-100 rangeInput" type="range" id="volume" name="volume" min="0" max="284" value="0" />
+                                    </div>
+                                  </div>
+                                </div>
+                          </div>
+
                   </div>
-                </div>
-              <div class="progress">
-                 <div class="progress-bar  progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
+              </div>
+              <div class="col-12 p-2 ">
+                   <div class="moreInsights my-2">
+                      <p class="mt-2">More Insights</p>
+                   </div>
               </div>
 
-             <div class="moreInsights mt-2">
-                  <p class="mt-2">More Insights</p>
-             </div>
+
+               <!--<div class="col-9">
+                   <div class="progress my-2">
+                     <div class="progress-bar  progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
+                  </div>
+              </div>-->
+
+
+          </div>
+
+
+
       </div>
     </div>
     <!-- width 1050px -->
@@ -91,7 +121,27 @@
             <p>AI Enhancement</p>
           </div>
         </div>
+  <div class="col-12 hiddenInsights">
+          <div class="row justify-content-center">
+            <div id="heatMaps" class="mt-1 insightController col-2 insightControllerActive">
+              <p>HeatMaps</p>
+            </div>
 
+            <div id="zone" class="mt-1 insightController col-2">
+              <p>Zone Analysis</p>
+            </div>
+            <div id="speed" class="mt-1 insightController col-2">
+              <p>Speed Analysis</p>
+            </div>
+
+            <div id="text" class="mt-1 insightController col-2">
+              <p>Text Analysis</p>
+            </div>
+            <div id="ai" class="mt-1 insightController col-2">
+              <p>AI Enhancement</p>
+            </div>
+          </div>
+        </div>
         <div class="col-10 p-3 text-center">
           <div class="heatMaps">
             <div class="row align-items-center text-center text-light">

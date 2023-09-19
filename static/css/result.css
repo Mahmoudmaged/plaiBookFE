@@ -10,9 +10,35 @@ body {
 /* NavBar */
 
 #highlight_status {
-    width: 640px;
+    width: 100%;
     display: none;
+}
 
+.vv {
+    position: relative;
+    height: auto;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 25px;
+
+
+}
+.progressUp{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0;
+    background: #24a0ed ;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.ll{
+    height: 100vh;
+    position: relative;
 }
 
 .navbar {
@@ -35,7 +61,6 @@ body {
 /* mainSection */
 
 .mainSection {
-    position: relative;
     background-image: url("../images/FirstPage/landing.png");
     background-repeat: no-repeat;
     overflow: hidden;
@@ -47,26 +72,23 @@ body {
 #videoCanvas {
     margin: auto;
     border: .5px solid #fff;
-    /* background-color: #000; */
     border-radius: 15px;
     background-image: url("../images/loading.gif");
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
 
-.mainSection .container {
-    position: relative;
-}
+
 
 canvas {
-     width: 640px;
-    height: 480px;
+     width: 100%;
+    /*height: 480px;*/
 }
 
 .moreInsights {
-    position: absolute;
-    bottom: 13%;
-    right: 4.2%;
+
+    margin-left: auto;
+    width: 200px;
     padding: 3px 10px;
     background-color: #fff;
     color: #663399;
@@ -77,10 +99,12 @@ canvas {
     border-radius: 10px;
 }
 
+.mainSection .container::-webkit-scrollbar,
+.mainSection .container::-webkit-scrollbar {
+    display: none;
+}
 #myDivProgControl {
-    position: absolute;
-    bottom: 12.1%;
-    right: 4.2%;
+
     width: 86%;
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
@@ -89,25 +113,15 @@ canvas {
     position: relative;
 }
 .videoEdit {
-    position: absolute;
-    bottom: 11%;
-    left: 21.5%;
-    width: 640px;
+    width: 100%;
     margin: auto;
-    /*background-color: red;*/
     cursor: pointer;
 
 }
-.fa-pause{
+.fa-play{
     display: none;
 }
-.progress{
 
-    width: 640px;
-   margin: auto;
-    /*cursor: pointer;*/
-
-}
 
 
 
@@ -311,4 +325,14 @@ canvas {
         padding: 5px;
         justify-content: start !important;
     }
+}
+
+
+@media screen and (max-width: 750px) {
+
+    .progressUp{
+        font-size: 9px;
+    }
+
+
 }

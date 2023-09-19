@@ -18,7 +18,6 @@ $(".closeInsights").on("click", function () {
     $(".insightsResult").hide(500)
 })
 
-
 $(".insightController").on("click", function () {
     const showSection = $(this).attr("id")
     $(this).addClass("insightControllerActive")
@@ -97,27 +96,32 @@ socket.on('new_frame', function (data) {
     videoFrames.push(...Object.values(data.image));
     //progressBar
     const overPercentage = Math.floor((videoFrames.length/ totalFramesNumber)*100).toFixed(1) ;
-    $(".progress-bar").css({ width: `${overPercentage}%` })
-    $(".progress-bar").text(`${overPercentage}%`);
+    // $(".progress-bar").css({ width: `${overPercentage}%` })
+    // $(".progress-bar").text(`${overPercentage}%`);
 
+   $(".progressUp").css({ height: `${overPercentage}%` })
+    $(".progressUp").text(`${overPercentage}%`);
     //check start play video
-    if (videoFrames.length === 64 && play) {
+    if (videoFrames.length === 128 && play) {
         myLoop();
     }
 
 })
 
+const canvas22 = document.getElementById("kk")
+
 
 function myLoop() {
  if (play){
-     // const canvasW = canvas.getBoundingClientRect().width ;
-     // const canvasH = canvas.getBoundingClientRect().height;
-     // console.log({canvasW , canvasH})
      const img = new Image();
+    console.log({w:canvas22.offsetWidth, h:canvas22.clientHeight})
         img.onload = function () {
-            ctx.drawImage(img, 0 , 0 , canvas.width,canvas.height);
+           canvas.width  = this.width;
+            canvas.height = this.height;
+            ctx.drawImage(img, 0 , 0 );
         };
         img.src = videoFrames[lastFrame]
+        $(".rangeInput").val(lastFrame)
         lastFrame++;
         if (lastFrame < videoFrames.length) {
             setTimeout(function () {
@@ -131,7 +135,7 @@ function myLoop() {
 //control Video Play
 //rangeInput
 $(".rangeInput").change(function () {
-       lastFrame = $(".rangeInput").val() - 1  >0 ? $(".rangeInput").val() - 1 : 0;
+       lastFrame= $(".rangeInput").val() - 1  >0 ? $(".rangeInput").val() - 1 : 0;
        play=true;
        $(".fa-play").hide()
        $(".fa-pause").show()
@@ -156,13 +160,18 @@ $(".fa-pause").on( "click",function () {
 //go forward
 $(".fa-forward").on( "click",function () {
        play=true;
-       lastFrame = lastFrame+10 < videoFrames.length ? lastFrame+10  : videoFrames.length-1;
+        $(".fa-play").hide()
+       $(".fa-pause").show()
+       lastFrame = lastFrame+25< videoFrames.length ? lastFrame+25 : videoFrames.length-1;
        myLoop();
 })
 //go backward
 $(".fa-backward").on( "click",function () {
       play=true;
-      lastFrame = lastFrame-10 > 0 ? lastFrame - 10  : 0;
+     
+        $(".fa-play").hide()
+       $(".fa-pause").show()
+      lastFrame = lastFrame-25 > 0 ? lastFrame - 25  : 0;
        myLoop();
 })
 // progress
