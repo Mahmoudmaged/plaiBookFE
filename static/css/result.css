@@ -9,11 +9,12 @@ body {
 
 /* NavBar */
 
-#highlight_status{
+#highlight_status {
     width: 640px;
     display: none;
 
 }
+
 .navbar {
     position: fixed;
     background-color: transparent;
@@ -22,6 +23,7 @@ body {
     width: 100%;
     top: 0;
 }
+
 .navbar-brand img {
     width: 120px;
 }
@@ -36,7 +38,6 @@ body {
     position: relative;
     background-image: url("../images/FirstPage/landing.png");
     background-repeat: no-repeat;
-    /* height: 600px; */
     overflow: hidden;
 }
 
@@ -48,16 +49,24 @@ body {
     border: .5px solid #fff;
     /* background-color: #000; */
     border-radius: 15px;
+    background-image: url("../images/loading.gif");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 .mainSection .container {
     position: relative;
 }
 
+canvas {
+     width: 640px;
+    height: 480px;
+}
+
 .moreInsights {
     position: absolute;
-    bottom: 5%;
-    left: 8%;
+    bottom: 13%;
+    right: 4.2%;
     padding: 3px 10px;
     background-color: #fff;
     color: #663399;
@@ -68,10 +77,44 @@ body {
     border-radius: 10px;
 }
 
+#myDivProgControl {
+    position: absolute;
+    bottom: 12.1%;
+    right: 4.2%;
+    width: 86%;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+.rowCool{
+    position: relative;
+}
+.videoEdit {
+    position: absolute;
+    bottom: 11%;
+    left: 21.5%;
+    width: 640px;
+    margin: auto;
+    /*background-color: red;*/
+    cursor: pointer;
+
+}
+.fa-pause{
+    display: none;
+}
+.progress{
+
+    width: 640px;
+   margin: auto;
+    /*cursor: pointer;*/
+
+}
+
+
+
 .moreInsights p {
     padding: 5px;
     border-left: 5px solid #663399;
-    font-weight: b;
+    font-weight: bold;
 }
 
 /* insightsResultController */
@@ -81,7 +124,7 @@ body {
 
 }
 
-.insightsResultController {
+.insights0ResultController {
     background-color: #Fff;
     border-radius: 50px;
     font-weight: bold;
@@ -252,7 +295,7 @@ body {
 @media screen and (max-width: 855px) {
 
     .insightsResultController {
-       display: none;
+        display: none;
     }
 
     .insightController {
@@ -261,7 +304,7 @@ body {
     }
 
     .hiddenInsights {
-       display: block;
+        display: block;
     }
 
     .hiddenInsights .row {

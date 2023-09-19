@@ -31,8 +31,9 @@
 
     <div class="mainSection text-light p-5">
       <div class="container text-center p-5 my-3">
-             <div id="highlight_status" class="alert border-danger text-start" style="color: red;"></div>
-                <canvas id="videoCanvas" width="1280" height="720"></canvas>
+          <div id="highlight_status" class="alert border-danger text-start" style="color: red;"></div>
+                <canvas id="videoCanvas" ></canvas>
+                <!-- <img id="videoCanvas" width="640" height="480" alt="video frames" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}"></img> -->
                 <div class="videoEdit">
                   <div class="row  align-items-center">
                     <div class="my-2 col-4 p-2">
@@ -42,7 +43,7 @@
                         </div>
                         <div class="col-4">
                           <i class="fa fa-play" aria-hidden="true"></i>
-                          <i class="fa fa-pause"   aria-hidden="true"></i>
+                          <i class="fa fa-pause"  style="display: none;" aria-hidden="true"></i>
                         </div>
 
                         <div class="col-4">
@@ -51,18 +52,22 @@
                       </div>
                     </div>
                     <div class="my-2 col-8 ">
-                      <input class="w-100 rangeInput" type="range" id="volume" name="volume" min="0" max="284" value="0" />
+                      <input class="w-100 rangeInput" type="range" id="volume" name="volume" min="0" max="11" />
                     </div>
                   </div>
                 </div>
-              <div class="progress">
-                 <div class="progress-bar  progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
-              </div>
 
-             <div class="moreInsights mt-2">
+
+                <div id="myDivProg" class="progress my-2 p-2">
+                  <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+
+              <!--  <div class="moreInsights mt-2">
                   <p class="mt-2">More Insights</p>
-             </div>
+                </div>-->
       </div>
+
+    </div>
     </div>
     <!-- width 1050px -->
     <div class="insightsResult my-2 p-5">
@@ -98,19 +103,19 @@
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Left Team</p>
-                  <img id="ltHeatMap" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="ltHeatMap" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Right Team</p>
-                  <img id="rtHeatMap" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="rtHeatMap" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Referer</p>
-                  <img id="reftHeatMap" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="reftHeatMap" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
             </div>
@@ -120,19 +125,19 @@
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Left Team</p>
-                  <img id="ltZone" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="ltZone" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Right Team</p>
-                  <img id="rtZone" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="rtZone" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Referer</p>
-                  <img id="refZone" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="refZone" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
             </div>
@@ -142,25 +147,25 @@
               <div class="col-md-6 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">left team speed heatmap</p>
-                  <img id="lFTSpeedHeatmap" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="lFTSpeedHeatmap" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
               <div class="col-md-6 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Right Team speed heatmap</p>
-                  <img id="rFTSpeedHeatmap" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="rFTSpeedHeatmap" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
               <div class="col-md-6 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">left team players speed</p>
-                  <img id="ltPlayersSpeed" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="ltPlayersSpeed" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
               <div class="col-md-6 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Right team players speed</p>
-                  <img id="rtPlayersSpeed" class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="" />
+                  <img id="rtPlayersSpeed" class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/1.png') }}" alt="" srcset="" />
                 </div>
               </div>
             </div>
@@ -171,31 +176,31 @@
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Left</p>
-                  <p id="leftTeamText">loading ..., please wait</p>
+                  <p id="leftTeamText">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.</p>
                 </div>
               </div>
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Right</p>
-                  <p id="rightTeamText">loading ..., please wait</p>
+                  <p id="rightTeamText">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.</p>
                 </div>
               </div>
               <div class="col-md-4 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Referer</p>
-                  <p id="refererTeamText">loading ..., please wait</p>
+                  <p id="refererTeamText">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.</p>
                 </div>
               </div>
               <div class="col-md-6 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Gaps Identifier</p>
-                  <p id="gapsIdentifierText">loading ..., please wait</p>
+                  <p id="gapsIdentifierText">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.</p>
                 </div>
               </div>
               <div class="col-md-6 mt-2">
                 <div class="p-2 addLight">
                   <p class="text-start">Other</p>
-                  <p id="otherText">loading ..., please wait</p>
+                  <p id="otherText">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero quas eum error ut iusto nisi commodi sunt temporibus minus minima soluta est architecto velit, aut culpa enim voluptatem omnis nam.</p>
                 </div>
               </div>
             </div>

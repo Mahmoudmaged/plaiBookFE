@@ -75,46 +75,135 @@ function show_text_analysis() {
 }
 
 function show_ai_enhancement() {
-    socket.emit('show_ai_enhancement',);
+    socket.emit('show_ai_enhancement');
 }
-
 
 
 // Display record
 let videoFrames = [];
 let lastFrame = 0;
+let totalFramesNumber = 284
+let play = true;
 const canvas = document.getElementById('videoCanvas');
 const ctx = canvas.getContext('2d');
+socket.on('totalFrameNumber', function (data) {
+    totalFramesNumber = data;
+})
+
+
+
 socket.on('new_frame', function (data) {
-            const img = new Image();
-            // append the recieved image (data)to the array videoFrames
 
-            // for (let i = 0; i < 16; i++) {
-            //     videoFrames.push(data.image[`image${i}`]);
-            // }
-            videoFrames.push(data.image);
-            // check if the length of the array is divisable by 16 frames
-            // if so, start displaying the frames in the canvas else do nothing
-            if (videoFrames.length % 16 === 0) {
-                function myLoop() {
-                    setTimeout(function () {
-                        img.onload = function () {
-                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        };
-                        img.src = videoFrames[lastFrame];
-                        lastFrame++;
-                        if (lastFrame < videoFrames.length) {
-                            myLoop();
-                        }
-                    }, 200)
-                }
+    videoFrames.push(...Object.values(data.image));
+    //progressBar
+    const overPercentage = Math.floor((videoFrames.length/ totalFramesNumber)*100).toFixed(1) ;
+    $(".progress-bar").css({ width: `${overPercentage}%` })
+    $(".progress-bar").text(`${overPercentage}%`);
+
+    //check start play video
+    if (videoFrames.length === 64 && play) {
+        myLoop();
+    }
+
+})
+
+
+function myLoop() {
+ if (play){
+     // const canvasW = canvas.getBoundingClientRect().width ;
+     // const canvasH = canvas.getBoundingClientRect().height;
+     // console.log({canvasW , canvasH})
+     const img = new Image();
+        img.onload = function () {
+            ctx.drawImage(img, 0 , 0 , canvas.width,canvas.height);
+        };
+        img.src = videoFrames[lastFrame]
+        lastFrame++;
+        if (lastFrame < videoFrames.length) {
+            setTimeout(function () {
                 myLoop();
-            }
-        });
+            }, 410)
+        }
+ }
+}
+
+
+//control Video Play
+//rangeInput
+$(".rangeInput").change(function () {
+       lastFrame = $(".rangeInput").val() - 1  >0 ? $(".rangeInput").val() - 1 : 0;
+       play=true;
+       $(".fa-play").hide()
+       $(".fa-pause").show()
+       //chang icon
+       myLoop();
+})
+//play
+$(".fa-play").on( "click",function () {
+       play=true;
+       $(".fa-play").hide()
+       $(".fa-pause").show()
+       //chang icon
+       myLoop();
+})
+$(".fa-pause").on( "click",function () {
+       play=false;
+       $(".fa-play").show()
+       $(".fa-pause").hide()
+       //chang icon
+       myLoop();
+})
+//go forward
+$(".fa-forward").on( "click",function () {
+       play=true;
+       lastFrame = lastFrame+10 < videoFrames.length ? lastFrame+10  : videoFrames.length-1;
+       myLoop();
+})
+//go backward
+$(".fa-backward").on( "click",function () {
+      play=true;
+      lastFrame = lastFrame-10 > 0 ? lastFrame - 10  : 0;
+       myLoop();
+})
+// progress
+let mouseX = 0;
+document.addEventListener("mousemove", (event) => {
+    mouseX = event.clientX;
+});
+
+// $(".progress").on("click", function () {
+//     const myDiv = document.getElementById("myDivProg");
+//     const leftPosition = myDiv.offsetLeft;
+//     let mouseRealPotionToProgressWidthStart = mouseX - leftPosition
+//     let eleWidth = parseInt($(this).css("width"))
+//     let overPercentage = Math.round((mouseRealPotionToProgressWidthStart / eleWidth) * 100)
+//     console.log({ mouseX, leftPosition, mouseRealPotionToProgressWidthStart, eleWidth, overPercentage });
+//     if (overPercentage <= 0) {
+//         overPercentage = 1
+//     } else if (overPercentage >= 100) {
+//         overPercentage = 100
+//     }
+//     $(".progress-bar").css({ width: `${overPercentage}%` })
+//     $(".progress-bar").text(`${overPercentage}%`)
+//
+//     // start array loop based on progressBar percentage
+//     let startLoopIndex = Math.round(videoFrames.length * (overPercentage / 100)) - 1;
+//     //start video Display
+//     myLoop(startLoopIndex);
+//
+// })
+//
+
+// $(".progress").on("click", function () {
+//
+//     const overPercentage = (videoFrames.length/ totalFramesNumber)*100
+//     $(".progress-bar").css({ width: `${overPercentage}%` })
+//     $(".progress-bar").text(`${overPercentage}%`)
+// })
 
 
 
-// heatmaps events
+// heatMaps events
 socket.on('left_team_heatmap', function (data) {
     document.getElementById('ltHeatMap').src = data.image;
 });

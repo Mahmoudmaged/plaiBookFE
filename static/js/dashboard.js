@@ -1,4 +1,5 @@
 
+
 localStorage.removeItem("processDict")
 
 function sideAlert(message) {
@@ -193,6 +194,11 @@ $(document).ready(function () {
     $(".showColors").on("click", function () {
         $(this).siblings(".colorsOpt").slideToggle()
         $(this).toggleClass("showColorsBorder").delay(2000)
+
+        $(this).parent().parent().siblings().children().children(".colorsOpt").slideUp()
+
+        $(this).parent().parent().siblings().children().children(".showColors ").addClass("showColorsBorder").delay(2000)
+
     })
 
     $(".selectedColor").on("click", function () {
