@@ -1,6 +1,6 @@
 
 let uploadedVideoPath = null;
-const {path} = JSON.parse(localStorage.getItem("processDict"))
+const {path} = localStorage.getItem("processDict")?JSON.parse(localStorage.getItem("processDict")):{path:null}
 uploadedVideoPath = path ? path : null;
 
 localStorage.removeItem("processDict")

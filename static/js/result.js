@@ -81,12 +81,15 @@ function show_ai_enhancement() {
 // Display record
 let videoFrames = [];
 let lastFrame = 0;
-let totalFramesNumber = 284
+let totalFramesNumber = 0
 let play = true;
+let frame_time=0;
 const canvas = document.getElementById('videoCanvas');
 const ctx = canvas.getContext('2d');
 socket.on('totalFrameNumber', function (data) {
-    totalFramesNumber = data;
+    console.log({data})
+    totalFramesNumber = data.total_frames;
+    frame_time=0;
 })
 
 
@@ -94,15 +97,18 @@ socket.on('totalFrameNumber', function (data) {
 socket.on('new_frame', function (data) {
 
     videoFrames.push(...Object.values(data.image));
+    frame_time += Object.values(data.image).length;
+    console.log({frame_time})
     //progressBar
-    const overPercentage = Math.floor((videoFrames.length/ totalFramesNumber)*100).toFixed(1) ;
+    const overPercentage = Math.floor((frame_time/ totalFramesNumber)*100).toFixed(1) ;
+    console.log({overPercentage})
     // $(".progress-bar").css({ width: `${overPercentage}%` })
     // $(".progress-bar").text(`${overPercentage}%`);
 
    $(".progressUp").css({ height: `${overPercentage}%` })
     $(".progressUp").text(`${overPercentage}%`);
     //check start play video
-    if (videoFrames.length === 128 && play) {
+    if (videoFrames.length === 32 && play) {
         myLoop();
     }
 
@@ -114,19 +120,21 @@ const canvas22 = document.getElementById("kk")
 function myLoop() {
  if (play){
      const img = new Image();
-    console.log({w:canvas22.offsetWidth, h:canvas22.clientHeight})
-        img.onload = function () {
+    // console.log({w:canvas22.offsetWidth, h:canvas22.clientHeight})
+        if (lastFrame < videoFrames.length) {
+            img.onload = function () {
            canvas.width  = this.width;
             canvas.height = this.height;
             ctx.drawImage(img, 0 , 0 );
         };
-        img.src = videoFrames[lastFrame]
-        $(".rangeInput").val(lastFrame)
-        lastFrame++;
-        if (lastFrame < videoFrames.length) {
+            img.src = videoFrames[lastFrame]
+            lastFrame++;
+            $(".rangeInput").val(lastFrame)
+        }
+        if (lastFrame < totalFramesNumber-19) {
             setTimeout(function () {
                 myLoop();
-            }, 410)
+            }, 200)
         }
  }
 }
