@@ -31,19 +31,23 @@ socketio = SocketIO(app)
 client_rooms = {}
 client_id = None
 
+
 @socketio.on('connect')
 def handle_connect():
+    global client_id
     # Here, you can determine the client's identity, such as a session ID or username
     client_id = request.sid  # Get the unique socket ID of the client
+    print(f'Client {client_id} connected')
     room = client_id  # You can use the client's ID as the room name
     join_room(room)  # Join the client to the room
     client_rooms[client_id] = room  # Store the room association
 
 
-
 @socketio.on('disconnect')
 def handle_disconnect():
+    global client_id
     client_id = request.sid
+    print(f'Client {client_id} disconnected')
     room = client_rooms.get(client_id)
     if room:
         leave_room(room)
@@ -109,11 +113,6 @@ def load_input_parameters():
     return input_parameters
 
 
-input_parameters = load_input_parameters()
-
-soccer_analysis = Soccer_Analysis(input_parameters)
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -143,7 +142,7 @@ def send_speed_images(speed_images_arr):
     for speed_image, event in zip(speed_images_arr, events_arr):
         ret, jpeg = cv2.imencode('.jpg', speed_image)
         img_str = base64.b64encode(jpeg.tobytes()).decode('utf-8')
-        socketio.emit(event, {'image': f"data:image/jpeg;base64,{img_str}"},room=client_id)
+        socketio.emit(event, {'image': f"data:image/jpeg;base64,{img_str}"}, room=client_id)
 
 
 def send_heatmaps_images(heatmap_images_arr):
@@ -151,7 +150,7 @@ def send_heatmaps_images(heatmap_images_arr):
     for heat_image, event in zip(heatmap_images_arr, events_arr):
         ret, jpeg = cv2.imencode('.jpg', heat_image)
         img_str = base64.b64encode(jpeg.tobytes()).decode('utf-8')
-        socketio.emit(event, {'image': f"data:image/jpeg;base64,{img_str}"},room=client_id)
+        socketio.emit(event, {'image': f"data:image/jpeg;base64,{img_str}"}, room=client_id)
 
 
 def send_zone_analysis_images(zone_analysis_images_arr):
@@ -159,18 +158,18 @@ def send_zone_analysis_images(zone_analysis_images_arr):
     for zone_image, event in zip(zone_analysis_images_arr, events_arr):
         ret, jpeg = cv2.imencode('.jpg', zone_image)
         img_str = base64.b64encode(jpeg.tobytes()).decode('utf-8')
-        socketio.emit(event, {'image': f"data:image/jpeg;base64,{img_str}"},room=client_id)
+        socketio.emit(event, {'image': f"data:image/jpeg;base64,{img_str}"}, room=client_id)
 
 
 def send_text_analysis(text_analysis):
-    socketio.emit('text_analysis', {'text_analysis': text_analysis},room=client_id)
+    socketio.emit('text_analysis', {'text_analysis': text_analysis}, room=client_id)
 
 
 def send_ai_enhancement(gpt_text):
-    socketio.emit('gpt_text', {'gpt_text': gpt_text},room=client_id)
+    socketio.emit('gpt_text', {'gpt_text': gpt_text}, room=client_id)
 
 
-def update_parameters_from_ui(ui_data):
+def update_parameters_from_ui(ui_data, soccer_analysis):
     soccer_analysis.opt['show_distances'] = ui_data['show_distance']
     # soccer_analysis.opt['left_team_color'] = str(f"['{ui_data['left_team_color']}',]")
     # soccer_analysis.opt['right_team_color'] = str(f"['{ui_data['right_team_color']}',]")
@@ -212,7 +211,9 @@ def write_highlight_status(text):
 def display(frame_generator):
     for frame in frame_generator:
         if 'processed_frame' in frame.keys():
-            socketio.emit('new_frame', {'image': frame['processed_frame']}, namespace='/',room=client_id)
+            print(frame.keys())
+            socketio.emit('new_frame', {'images': frame['processed_frame'], 'bg_img': frame['bg_img']}, namespace='/',
+                          room=client_id)
         if 'speed_images' in frame.keys():
             send_speed_images(frame['speed_images'])
         if 'heatmaps' in frame.keys():
@@ -224,7 +225,7 @@ def display(frame_generator):
         if 'highlight_status' in frame.keys():
             write_highlight_status(frame['highlight_status'])
         if 'total_frames' in frame.keys():
-            socketio.emit('totalFrameNumber', frame['total_frames'],room=client_id)
+            socketio.emit('totalFrameNumber', frame['total_frames'], room=client_id)
 
 
 @socketio.on('start_processing')
@@ -232,11 +233,15 @@ def process_video(data):
     # update the input parameters with the new data from the client side and also re initialize the video to can loop
     # over it again from the beginning
     print(data)
-    update_parameters_from_ui(data)
+    input_parameters = load_input_parameters()
+
+    soccer_analysis = Soccer_Analysis(input_parameters)
+
+    update_parameters_from_ui(data, soccer_analysis)
     soccer_analysis.reset_object()
     # emit the total number of frames to the client side to can update the progress bar accordingly and also to can know when to stop the video processing
-    load_models()
-    socketio.emit('totalFrameNumber', {'total_frames': soccer_analysis.loop_length},room=client_id)
+    load_models(soccer_analysis, input_parameters)
+    socketio.emit('totalFrameNumber', {'total_frames': soccer_analysis.loop_length}, room=client_id)
     t1 = time.time()
     frame_generator = soccer_analysis.video_run()
     display_thread = Thread(target=display, args=(frame_generator,), name='display_thread')
@@ -252,7 +257,7 @@ def send_variant_image():
     dummy_image = 255 * np.random.rand(480, 640, 3)
     ret, jpeg = cv2.imencode('.jpg', dummy_image)
     image_str = base64.b64encode(jpeg.tobytes()).decode('utf-8')
-    socketio.emit('variant_image_response', {'image': f"data:image/jpeg;base64,{image_str}"},room=client_id)
+    socketio.emit('variant_image_response', {'image': f"data:image/jpeg;base64,{image_str}"}, room=client_id)
 
 
 # @socketio.on('show_speed_images')
@@ -286,17 +291,17 @@ def send_variant_image():
 #     soccer_analysis.opt['show_text_analysis'] = data['show_text_analysis']
 
 
-@socketio.on('show_ai_enhancement')
-def show_ai_enhancement():
-    insights = ""
-    for line in soccer_analysis.text_analysis_lines:
-        insights += line
-    gpt_ans = get_gpt_response(insights)
-    print(gpt_ans)
-    send_ai_enhancement(gpt_ans)
+# @socketio.on('show_ai_enhancement')
+# def show_ai_enhancement():
+#     insights = ""
+#     for line in soccer_analysis.text_analysis_lines:
+#         insights += line
+#     gpt_ans = get_gpt_response(insights)
+#     print(gpt_ans)
+#     send_ai_enhancement(gpt_ans)
 
 
-def load_models():
+def load_models(soccer_analysis, input_parameters):
     perspective_transform = PerspectiveTransform(input_parameters)
     detector = Yolo8_detection(os.path.join(os.getcwd(), '../model/weights/detection_yolo8.pt'), input_parameters)
     soccer_analysis.initialize_models(detector, perspective_transform)

@@ -95,9 +95,9 @@ socket.on('totalFrameNumber', function (data) {
 
 
 socket.on('new_frame', function (data) {
-
-    videoFrames.push(...Object.values(data.image));
-    frame_time += Object.values(data.image).length;
+    //  2d map in data.bg_img
+    videoFrames.push(...Object.values(data.images));
+    frame_time += Object.values(data.images).length;
     console.log({frame_time})
     //progressBar
     const overPercentage = Math.floor((frame_time/ totalFramesNumber)*100).toFixed(1) ;
