@@ -1,4 +1,3 @@
-
 $(window).scroll(function () {
     let scrollTop = $(window).scrollTop();
     if (scrollTop >= 70) {
@@ -13,7 +12,7 @@ $(".moreInsights").on("click", function () {
     $(".insightsResult").show(500)
 })
 
-$(".closeInsights").on("click", function () {
+$(".closeInsights , .borderUP").on("click", function () {
     $(".moreInsights").show(500)
     $(".insightsResult").hide(500)
 })
@@ -22,6 +21,8 @@ $(".insightController").on("click", function () {
     const showSection = $(this).attr("id")
     $(this).addClass("insightControllerActive")
     $(this).siblings().removeClass("insightControllerActive");
+    $(this).parent().siblings().children().removeClass("insightControllerActive");
+
     $(`.${showSection}`).siblings().hide(500)
     $(`.${showSection}`).show(1000).delay(500)
 })
@@ -31,7 +32,6 @@ const socket = io.connect('http://' + document.domain + ':' + location.port);
 function checkAdvanced() {
     const dict = JSON.parse(localStorage.getItem("processDict"));
     if (dict?.show_heatmap) {
-        console.log("heat");
         show_heatmap_images()
     } else {
         $("#heatMaps").hide()
@@ -39,7 +39,6 @@ function checkAdvanced() {
     }
 
     if (dict?.show_zone_analysis) {
-        console.log("zone");
         show_zone_analysis_images()
     } else {
         $("#zone").hide()
@@ -76,20 +75,75 @@ function show_text_analysis() {
 function show_ai_enhancement() {
     socket.emit('show_ai_enhancement');
 }
+// accept colors
+let LTCOLOR = 'red';
+let RTCOLOR = 'green';
 
 
+
+//delete thisPart
+// let left_team_ratio =90;
+// let right_team_ratio =10;
+// document.getElementById('LTR').innerText = left_team_ratio;
+// document.getElementById('RTR').innerText = right_team_ratio;
+// $(".teamColor_LT").css({backgroundColor:LTCOLOR});
+// $(".teamColor_RT").css({backgroundColor:RTCOLOR});
+// $(".pie").css({backgroundImage:`conic-gradient(${LTCOLOR} ${left_team_ratio}%, ${RTCOLOR}  ${right_team_ratio}%)`});
+
+function showTeamsColors(left_team_color, right_team_color) {
+    LTCOLOR = left_team_color
+    RTCOLOR = right_team_color
+    $(".teamColor_LT , .LTCo").css({ backgroundColor: `${left_team_color}` });
+    $(".teamColor_RT , .RTCo").css({ backgroundColor: `${right_team_color}` });
+}
+socket.on('getColors', function (data) {
+    LTCOLOR = data.left_team_color
+    RTCOLOR = data.right_team_color
+    showTeamsColors(LTCOLOR, RTCOLOR)
+    $(".loading").hide()
+})
+
+$(".cColors").on('click', function () {
+    socket.emit('confirmColor', true)
+    $(".confirmColors").hide()
+    $(".showResultSection").show()
+
+})
+$(".rColors").on('click', function () {
+    socket.emit('confirmColor', false)
+    showTeamsColors(RTCOLOR, LTCOLOR)
+    $(".confirmColors").hide()
+    $(".showResultSection").show()
+
+})
+
+
+// AcquisitionRatio
+socket.on('AcquisitionRatio', function (data) {
+    document.getElementById('LTR').innerText = data.left_team_ratio;
+    document.getElementById('RTR').innerText = data.right_team_ratio;
+    $(".pie").css({ backgroundImage: `conic-gradient(${LTCOLOR} ${data.left_team_ratio}%, ${RTCOLOR}  ${data.right_team_ratio}%)` });
+
+    // .pie {
+    //     width: 200px;
+    //     height: 200px;
+    //     margin: auto;
+    //     background-image: conic-gradient(orange 80%, blue 20%);
+    //     border-radius: 50%;
+    // }
+
+})
 // Display record
 let videoFrames = [];
 let lastFrame = 0;
 let totalFramesNumber = 0
 let play = true;
-let frame_time=0;
+let frame_time = 0;
 const canvas = document.getElementById('videoCanvas');
 const ctx = canvas.getContext('2d');
 socket.on('totalFrameNumber', function (data) {
-    console.log({data})
     totalFramesNumber = data.total_frames;
-    frame_time=0;
+    frame_time = 0;
 })
 
 
@@ -98,14 +152,10 @@ socket.on('new_frame', function (data) {
     //  2d map in data.bg_img
     videoFrames.push(...Object.values(data.images));
     frame_time += Object.values(data.images).length;
-    console.log({frame_time})
     //progressBar
-    const overPercentage = Math.floor((frame_time/ totalFramesNumber)*100).toFixed(1) ;
-    console.log({overPercentage})
-    // $(".progress-bar").css({ width: `${overPercentage}%` })
-    // $(".progress-bar").text(`${overPercentage}%`);
+    const overPercentage = Math.floor((frame_time / totalFramesNumber) * 100).toFixed(1);
 
-   $(".progressUp").css({ height: `${overPercentage}%` })
+    $(".progressUp").css({ height: `${overPercentage}%` })
     $(".progressUp").text(`${overPercentage}%`);
     //check start play video
     if (videoFrames.length === 32 && play) {
@@ -118,69 +168,68 @@ const canvas22 = document.getElementById("kk")
 
 
 function myLoop() {
- if (play){
-     const img = new Image();
-    // console.log({w:canvas22.offsetWidth, h:canvas22.clientHeight})
+    if (play) {
+        const img = new Image();
         if (lastFrame < videoFrames.length) {
             img.onload = function () {
-           canvas.width  = this.width;
-            canvas.height = this.height;
-            ctx.drawImage(img, 0 , 0 );
-        };
+                canvas.width = this.width;
+                canvas.height = this.height;
+                ctx.drawImage(img, 0, 0);
+            };
             img.src = videoFrames[lastFrame]
             lastFrame++;
             $(".rangeInput").val(lastFrame)
         }
-        if (lastFrame < totalFramesNumber-19) {
+        if (lastFrame < totalFramesNumber - 19) {
             setTimeout(function () {
                 myLoop();
             }, 200)
         }
- }
+    }
 }
 
 
 //control Video Play
 //rangeInput
 $(".rangeInput").change(function () {
-       lastFrame= $(".rangeInput").val() - 1  >0 ? $(".rangeInput").val() - 1 : 0;
-       play=true;
-       $(".fa-play").hide()
-       $(".fa-pause").show()
-       //chang icon
-       myLoop();
+    lastFrame = $(".rangeInput").val() - 1 > 0 ? $(".rangeInput").val() - 1 : 0;
+    play = true;
+    $(".fa-play").hide()
+    $(".fa-pause").show()
+    //chang icon
+    myLoop();
 })
 //play
-$(".fa-play").on( "click",function () {
-       play=true;
-       $(".fa-play").hide()
-       $(".fa-pause").show()
-       //chang icon
-       myLoop();
+$(".fa-play").on("click", function () {
+    play = true;
+    $(".fa-play").hide()
+    $(".fa-pause").show()
+    //chang icon
+    myLoop();
 })
-$(".fa-pause").on( "click",function () {
-       play=false;
-       $(".fa-play").show()
-       $(".fa-pause").hide()
-       //chang icon
-       myLoop();
+$(".fa-pause").on("click", function () {
+    play = false;
+    $(".fa-play").show()
+    $(".fa-pause").hide()
+    //chang icon
+    myLoop();
 })
 //go forward
-$(".fa-forward").on( "click",function () {
-       play=true;
-        $(".fa-play").hide()
-       $(".fa-pause").show()
-       lastFrame = lastFrame+25< videoFrames.length ? lastFrame+25 : videoFrames.length-1;
-       myLoop();
+$(".fa-forward").on("click", function () {
+    play = true;
+    $(".fa-play").hide()
+    $(".fa-pause").show()
+    lastFrame = lastFrame + 25 < videoFrames.length ? lastFrame + 25 : videoFrames.length - 1;
+    myLoop();
 })
 //go backward
-$(".fa-backward").on( "click",function () {
-      play=true;
-     
-        $(".fa-play").hide()
-       $(".fa-pause").show()
-      lastFrame = lastFrame-25 > 0 ? lastFrame - 25  : 0;
-       myLoop();
+$(".fa-backward").on("click", function () {
+    play = true;
+
+    $(".fa-play").hide()
+    $(".fa-pause").show()
+    lastFrame = lastFrame - 25 > 0 ? lastFrame - 25 : 0;
+    myLoop();
 })
 // progress
 let mouseX = 0;
@@ -194,7 +243,6 @@ document.addEventListener("mousemove", (event) => {
 //     let mouseRealPotionToProgressWidthStart = mouseX - leftPosition
 //     let eleWidth = parseInt($(this).css("width"))
 //     let overPercentage = Math.round((mouseRealPotionToProgressWidthStart / eleWidth) * 100)
-//     console.log({ mouseX, leftPosition, mouseRealPotionToProgressWidthStart, eleWidth, overPercentage });
 //     if (overPercentage <= 0) {
 //         overPercentage = 1
 //     } else if (overPercentage >= 100) {
@@ -259,8 +307,6 @@ socket.on('right_team_players_speed', function (data) {
 
 // text_analysis
 socket.on('text_analysis', function (data) {
-    // print data to the console
-    console.log(data);
     const text = data['text_analysis'];
     document.getElementById('leftTeamText').innerText = text.left_team.join('');
     document.getElementById('rightTeamText').innerText = text.right_team.join('');

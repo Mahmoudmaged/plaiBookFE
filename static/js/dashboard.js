@@ -1,6 +1,6 @@
 
 let uploadedVideoPath = null;
-const {path} = localStorage.getItem("processDict")?JSON.parse(localStorage.getItem("processDict")):{path:null}
+const { path } = localStorage.getItem("processDict") ? JSON.parse(localStorage.getItem("processDict")) : { path: null }
 uploadedVideoPath = path ? path : null;
 
 localStorage.removeItem("processDict")
@@ -173,7 +173,6 @@ const CSS_COLOR_NAMES = {
     Yellow: '#FFFF00',
     YellowGreen: '#9ACD32',
 };
-// const colorsList = Object.keys(CSS_COLOR_NAMES)
 
 let cartoonaOne = ``
 const colorsList = ["Dark Blue",
@@ -183,7 +182,7 @@ const colorsList = ["Dark Blue",
     "green",
     "red",
     "white",
-    "yellow","black"]
+    "yellow", "black"]
 for (const color of colorsList) {
     cartoonaOne += ` <label><input class="selectedColor" type="checkbox" value="${color}"> ${color}</label>`;
     $(".colorsOpt").html(cartoonaOne)
@@ -285,23 +284,69 @@ $('.plus').click(function () {
 //connect socket
 const socket = io.connect('http://' + document.domain + ':' + location.port);
 
-socket.emit("testConnection" , "lolllll")
-
-
-//upload record
-$(".uploadBtn").on("click", function () {
-    uploadVideo()
+// BrowseVideo
+$(".BrowseVideo").on("click", function () {
+    $(".mainSection_select , .mainSection_upload_video_link  , .mainSection_email").hide(300)
+    $(".mainSection_upload_video").delay(300).show(200)
+})
+// YoutubeLinkBtn
+$(".YoutubeLinkBtn").on("click", function () {
+    $(".mainSection_select , .mainSection_upload_video  , .mainSection_email").hide(300)
+    $(".mainSection_upload_video_link").delay(300).show(200)
+})
+// backSelect
+$(".backSelect").on("click", function () {
+    $(".mainSection_upload_video , .mainSection_upload_video_link  , .mainSection_email").hide(300)
+    $(".mainSection_select").delay(300).show(200)
 })
 
+// backEmailSelect
+$(".backEmailSelect").on("click", function () {
+    if ($('#YoutubeURLVal').val()) {
+        $(".mainSection_select , .mainSection_upload_video   , .mainSection_email").hide(300)
+        $(" .mainSection_upload_video_link").delay(300).show(200)
+    } else if (uploadedVideoPath) {
+        $(".mainSection_select ,.mainSection_upload_video_link  , .mainSection_email").hide(300)
+        $(".mainSection_upload_video   ").delay(300).show(200)
+    } else {
+        $(".mainSection_upload_video , .mainSection_upload_video_link  , .mainSection_email").hide(300)
+        $(".mainSection_select ").delay(300).show(200)
+    }
+})
+// uploadRecord
+$(".uploadRecord").on("click", function () {
+    uploadVideo()
+
+})
+// confirmYoutubeLink
+$(".confirmYoutubeLink").on("click", function () {
+    if (!$('#YoutubeURLVal').val()) {
+        sideAlert("Please enter your youtube link.")
+    } else {
+        $(".mainSection_select , .mainSection_upload_video  ,.mainSection_upload_video_link ").hide(300)
+        $(".mainSection_email").delay(300).show(200)
+    }
+
+})
+// sendEmail
+$(".sendEmail").on("click", function () {
+    if (!$('#selectEmailVal').val()) {
+        $(".loading").hide()
+        sideAlert("Please enter  your email.")
+    } else {
+        $(window).scrollTop($(".sectionTwo").offset().top)
+    }
+})
+// startProcessing
+$(".startProcessingBtn").on("click", function () {
+    startProcessing()
+})
 
 
 function uploadVideo() {
     $(".loading").show()
     const videoFile = document.getElementById('fileVideo').files[0];
-    if (!$('.emailAddress').val()) {
-        $(".loading").hide()
-        sideAlert("Please enter  your email.")
-    } else if (videoFile) {
+    if (videoFile) {
         const formData = new FormData();
         formData.append('video', videoFile);
         fetch('/upload', {
@@ -310,51 +355,35 @@ function uploadVideo() {
         }).then(response => response.json()).then(data => {
             uploadedVideoPath = data.path;
             $(".loading").hide()
-            $(window).scrollTop($(".sectionTwo").offset().top)
+            $(".mainSection_select , .mainSection_upload_video  ,.mainSection_upload_video_link ").hide(300)
+            $(".mainSection_email").delay(300).show(200)
         });
-    } else if ($(".YoutubeURL").val()) {
-        $(".loading").hide()
-        $(window).scrollTop($(".sectionTwo").offset().top)
     } else {
         $(".loading").hide()
-        sideAlert("Please upload your video or put YouTube link.")
-
+        sideAlert("Please upload your video")
     }
 }
-//start analysis.
-
-//upload record
-$(".startProcessingBtn").on("click", function () {
-    startProcessing()
-})
-
 function startProcessing() {
     $(".loading").show()
 
-    if (!$('.emailAddress').val()) {
+    if (!$('#selectEmailVal').val()) {
         $(".loading").hide()
         sideAlert("Please enter  your email.")
-    } else if (!uploadedVideoPath && !$(".YoutubeURL").val()) {
+    } else if (!uploadedVideoPath && !$('#YoutubeURLVal').val()) {
         $(".loading").hide()
         sideAlert("Please upload your video or put YouTube link.")
-    } else if (!lt.length || !rt.length || !referer.length) {
-        $(".loading").hide()
-        sideAlert("Please select teams colors")
-
-    } else {
+    }
+    else {
         const dict = {
             path: uploadedVideoPath,
-            youtube_url: $(".YoutubeURL").val(),
-            email: $('.emailAddress').val(),
+            youtube_url: $('#YoutubeURLVal').val(),
+            email: $('#selectEmailVal').val(),
             start_time_hour: $('#start_time_hour').val(),
             start_time_min: $('#start_time_min').val(),
             start_time_sec: $('#start_time_sec').val(),
             analysis_time_hour: $('#analysis_time_hour').val(),
             analysis_time_min: $('#analysis_time_min').val(),
             analysis_time_sec: $('#analysis_time_sec').val(),
-            left_team_color: lt,
-            right_team_color: rt,
-            ref_color: referer,
             show_heatmap: $("#heatMapsInput").is(":checked") ? $("#heatMapsInput").val() : null,
             show_zone_analysis: $("#zoneAnalysisInput").is(":checked") ? $("#zoneAnalysisInput").val() : null,
             show_speed_analysis: $("#speedAnalysisInput").is(":checked") ? $("#speedAnalysisInput").val() : null,
@@ -368,3 +397,87 @@ function startProcessing() {
     }
 
 }
+
+
+
+//upload record
+// $(".uploadBtn").on("click", function () {
+//     uploadVideo()
+// })
+// function uploadVideo() {
+//     $(".loading").show()
+//     const videoFile = document.getElementById('fileVideo').files[0];
+//     if (!$('.emailAddress').val()) {
+//         $(".loading").hide()
+//         sideAlert("Please enter  your email.")
+//     } else if (videoFile) {
+//         const formData = new FormData();
+//         formData.append('video', videoFile);
+//         fetch('/upload', {
+//             method: 'POST',
+//             body: formData
+//         }).then(response => response.json()).then(data => {
+//             uploadedVideoPath = data.path;
+//             $(".loading").hide()
+//             $(window).scrollTop($(".sectionTwo").offset().top)
+//         });
+//     } else if ($(".YoutubeURL").val()) {
+//         $(".loading").hide()
+//         $(window).scrollTop($(".sectionTwo").offset().top)
+//     } else {
+//         $(".loading").hide()
+//         sideAlert("Please upload your video or put YouTube link.")
+
+//     }
+// }
+//start analysis.
+
+//upload record
+
+
+
+// function startProcessing() {
+//     $(".loading").show()
+
+//     if (!$('.emailAddress').val()) {
+//         $(".loading").hide()
+//         sideAlert("Please enter  your email.")
+//     } else if (!uploadedVideoPath && !$(".YoutubeURL").val()) {
+//         $(".loading").hide()
+//         sideAlert("Please upload your video or put YouTube link.")
+//     }
+//     // Stop Select Colors
+//     // else if (!lt.length || !rt.length || !referer.length) {
+//     //     $(".loading").hide()
+//     //     sideAlert("Please select teams colors")
+//     // }
+
+
+//     else {
+//         const dict = {
+//             path: uploadedVideoPath,
+//             youtube_url: $(".YoutubeURL").val(),
+//             email: $('.emailAddress').val(),
+//             start_time_hour: $('#start_time_hour').val(),
+//             start_time_min: $('#start_time_min').val(),
+//             start_time_sec: $('#start_time_sec').val(),
+//             analysis_time_hour: $('#analysis_time_hour').val(),
+//             analysis_time_min: $('#analysis_time_min').val(),
+//             analysis_time_sec: $('#analysis_time_sec').val(),
+//             // Stop Select Colors
+//             // left_team_color: lt,
+//             // right_team_color: rt,
+//             // ref_color: referer,
+//             show_heatmap: $("#heatMapsInput").is(":checked") ? $("#heatMapsInput").val() : null,
+//             show_zone_analysis: $("#zoneAnalysisInput").is(":checked") ? $("#zoneAnalysisInput").val() : null,
+//             show_speed_analysis: $("#speedAnalysisInput").is(":checked") ? $("#speedAnalysisInput").val() : null,
+//             show_text_analysis: $("#textAnalysisInput").is(":checked") ? $("#textAnalysisInput").val() : null,
+//             show_distance: $("#showDistanceInput").is(":checked") ? $("#showDistanceInput").val() : null,
+//         }
+//         localStorage.setItem("processDict", JSON.stringify(dict))
+//         socket.emit('start_processing', dict);
+//         $(".loading").hide()
+//         window.location.href = '/result';
+//     }
+
+// }

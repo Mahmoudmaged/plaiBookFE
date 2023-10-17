@@ -47,8 +47,7 @@
         </ul>
       </div>
     </nav>
-
-    <div class="mainSection text-light p-5">
+    <div class="mainSection text-light p-5 d-none">
       <div class="row justify-content-center align-items-center">
         <div class="col-4 leftPart text-center">
           <div class="row w-100 h-100 align-items-center">
@@ -105,9 +104,110 @@
       </div>
     </div>
 
+    <div class="mainSection text-light p-5">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-4 leftPart text-center">
+          <div class="row w-100 h-100 align-items-center">
+            <div class="col-12">
+              <img class="img-fluid" src="{{ url_for('static', filename = 'images/FirstPage/logo.png') }}" alt="" srcset="" />
+            </div>
+          </div>
+        </div>
+        <div class="col-8 rightPart mainSection_select text-center p-5">
+          <div class="row w-100 h-100 align-items-center">
+            <div class="col-12 uploadDiv px-3 py-3 mt-5">
+              <div class="text-center">
+                <h4 class="YoutubeURLP">Browse video or put Youtube link ?</h4>
+              </div>
+              <div class="w-100 pt-3 text-center UBTN">
+                <div class="row align-items-center">
+                  <div class="col-md-6 mt-2">
+                    <button class="btn px-5 py-3 uploadBtn BrowseVideo">Browse Video</button>
+                  </div>
+                  <div class="col-md-1 mt-2">
+                    <span class="">OR</span>
+                  </div>
+                  <div class="col-md-5 mt-2">
+                    <button class="btn px-5 py-3 uploadBtn YoutubeLinkBtn">Youtube link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-8 rightPart mainSection_upload_video text-center p-5">
+          <div class="row w-100 h-100 align-items-center">
+            <div class="col-12 uploadDiv px-3 py-3 mt-5">
+              <div class="">
+                <div class="text-start">
+                  <i class="text-start fa fa-arrow-circle-left fa-2x backSelect"></i>
+                </div>
+                <!--  <p class="text-center"> 
+                  Choose video file:</p>  -->
+                <div class="uploadInput p-3 container text-center">
+                  <label for="fileVideo" class="w-100 h-100">
+                    <div class="row align-items-center">
+                      <div class="col-4 mt-1 text-end">
+                        <i class="fa fa-cloud-upload fa-3x" aria-hidden="true"></i>
+                      </div>
+
+                      <div class="col-8 mt-1 text-start">
+                        <h3 class="">Browse your video.</h3>
+                      </div>
+                    </div>
+                  </label>
+                  <input style="display: none;" id="fileVideo" accept=".mp4,.mkv,.avi" type="file" name="video" class="videoField ms-auto mt-3" />
+                </div>
+                <div class="col-md-6 pt-3 text-center UBTN w-100">
+                  <button class="btn px-5 py-3 uploadBtn uploadRecord">Upload</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-8 rightPart mainSection_upload_video_link text-center p-5">
+          <div class="row w-100 h-100 align-items-center">
+            <div class="col-12 uploadDiv px-3 py-3 mt-5">
+              <div class="text-start">
+                <i class="text-start fa fa-arrow-circle-left fa-2x backSelect"></i>
+              </div>
+              <div class="text-center">
+                <h4>Put A YouTube URL.</h4>
+                <div class="mt-3">
+                  <input class="formUploadInput YoutubeURL" type="text" name="url" id="YoutubeURLVal" placeholder="ex:https://www.youtube.com" />
+                </div>
+                <div class="col-md-12 pt-3 text-center UBTN">
+                  <button class="btn px-5 py-3 uploadBtn confirmYoutubeLink">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-8 rightPart mainSection_email text-center p-5">
+          <div class="row w-100 h-100 align-items-center">
+            <div class="col-12 uploadDiv px-3 py-3 mt-5">
+              <div class="text-start">
+                <i class="text-start fa fa-arrow-circle-left fa-2x backEmailSelect"></i>
+              </div>
+              <div class="text-center">
+                <h4 class="YoutubeURLP">Email Address to send results.</h4>
+                <input class="formUploadInput emailAddress" type="email" name="email" id="selectEmailVal" placeholder="ex:ex@gmail.com" />
+              </div>
+              <div class="w-100 pt-3 text-center UBTN">
+                <button class="btn px-5 py-3 uploadBtn sendEmail">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="sectionTwo text-light p-5">
       <div class="row align-items-center justify-content-center">
         <div class="col-lg-7 mt-2 bg-light text-dark settingRight p-3">
+          <!-- Stop color select -->
+          <!--             
           <div class="row mt-3">
             <p class="head">Teams Colors</p>
             <div class="col-md-4 p-2">
@@ -131,36 +231,38 @@
                 <div class="colorsOpt p-2"></div>
               </div>
             </div>
-          </div>
+          </div>             -->
+          <!-- Stop color select -->
+
           <div class="row align-items-center">
-            <hr />
+            <!-- <hr /> -->
             <p class="head">
               <i class="fa fa-clock-o"></i> Match Start Time
             </p>
             <div class="col-4">
               <p>Hour</p>
               <div class="number mt-1">
-                <span class="minus">-</span>
+                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
                 <input id="start_time_hour" type="text" value="0" />
-                <span class="plus">+</span>
+                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
               </div>
             </div>
 
             <div class="col-4">
               <p>Minute</p>
               <div class="number mt-1">
-                <span class="minus">-</span>
+                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
                 <input id="start_time_min" type="text" value="0" />
-                <span class="plus">+</span>
+                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
               </div>
             </div>
 
             <div class="col-4">
               <p>Seconds</p>
               <div class="number mt-1">
-                <span class="minus">-</span>
+                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
                 <input id="start_time_sec" type="text" value="0" />
-                <span class="plus">+</span>
+                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
               </div>
             </div>
           </div>
@@ -173,27 +275,27 @@
             <div class="col-4">
               <p>Hour</p>
               <div class="number mt-1">
-                <span class="minus">-</span>
+                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
                 <input id="analysis_time_hour" type="text" value="0" />
-                <span class="plus">+</span>
+                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
               </div>
             </div>
 
             <div class="col-4">
               <p>Minute</p>
               <div class="number mt-1">
-                <span class="minus">-</span>
+                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
                 <input id="analysis_time_min" type="text" value="0" />
-                <span class="plus">+</span>
+                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
               </div>
             </div>
 
             <div class="col-4">
               <p>Seconds</p>
               <div class="number mt-1">
-                <span class="minus">-</span>
+                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
                 <input id="analysis_time_sec" type="text" value="0" />
-                <span class="plus">+</span>
+                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
               </div>
             </div>
           </div>
@@ -206,34 +308,34 @@
             <div class="col-6">
               <div class="custom-checkbox">
                 <input class="styled-checkbox" type="checkbox" name="HeatMaps" id="heatMapsInput" value="heatMaps" />
-                <span class="ms-1" for="">HeatMaps</span>
+                <span class="ms-1 custom-checkbox-span" for="">Heat Maps</span>
               </div>
             </div>
 
             <div class="col-6">
               <div class="custom-checkbox">
                 <input class="styled-checkbox" type="checkbox" name="zone" id="zoneAnalysisInput" value="zone analysis" />
-                <span class="ms-1" for="">Zone analysis</span>
+                <span class="ms-1 custom-checkbox-span" for="">Zone Analysis</span>
               </div>
             </div>
             <div class="col-6">
               <div class="custom-checkbox">
                 <input class="styled-checkbox" type="checkbox" name="distance" id="showDistanceInput" value="show distance" />
-                <span class="ms-1" for="">Show distance</span>
+                <span class="ms-1 custom-checkbox-span" for="">Show Distance</span>
               </div>
             </div>
 
             <div class="col-6">
               <div class="custom-checkbox">
                 <input class="styled-checkbox" type="checkbox" name="speedAnalysis" id="speedAnalysisInput" value="speed analysis" />
-                <span class="ms-1" for="">Speed Analysis</span>
+                <span class="ms-1 custom-checkbox-span" for="">Speed Analysis</span>
               </div>
             </div>
 
             <div class="col-6">
               <div class="custom-checkbox">
                 <input class="styled-checkbox" type="checkbox" name="youtube" id="textAnalysisInput" value="text analysis" />
-                <span class="ms-1" for="">Text Analysis</span>
+                <span class="ms-1 custom-checkbox-span" for="">Text Analysis</span>
               </div>
             </div>
           </div>

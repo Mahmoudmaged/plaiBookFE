@@ -5,12 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename = 'node_modules/bootstrap/dist/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/result.css') }}" />
     <title>PlaiBook</title>
   </head>
 
   <body class="">
+    <div class="loading">
+      <div class="row align-items-center justify-content-center text-center w-100 h-100 text-light">
+        <div class="col-12">
+          <i class="fa fa-spinner fa-5x fa-spin text-light"></i>
+        </div>
+      </div>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-light text-light">
       <a class="navbar-brand p-2" href="/"><img src="{{ url_for('static', filename = 'images/FirstPage/logo.png') }}" alt="" srcset="" class="img-fluid" /></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -30,115 +37,197 @@
       </div>
     </nav>
 
-    <div class="mainSection text-light p-5 mt-5">
-      <div class="container text-center p-5 my-3">
-          <div class="row ">
-              <div class="col-12">
-
-                  <div id="highlight_status" class="alert border-danger text-start" style="color: red;"></div>
-
-                  <div  class="row">
-                      <div class="col-1  vv">
-                          <div class="progressUp  progress-bar-striped">
-                              0%
-                          </div>
-                      </div>
-                      <div class="col-11"  id="kk">
-                         <canvas id="videoCanvas"></canvas>
-                      </div>
-                      <div  class="col-1"></div>
-                       <div class="col-11">
-                           <div class="videoEdit">
-                                  <div class="row  align-items-center">
-                                    <div class="my-2 col-4 p-2">
-                                      <div class="row">
-                                        <div class="col-4">
-                                          <i class="fa fa-backward" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="col-4">
-                                          <i class="fa fa-play" aria-hidden="true"></i>
-                                          <i class="fa fa-pause"   aria-hidden="true"></i>
-                                        </div>
-
-                                        <div class="col-4">
-                                          <i class="fa fa-forward" aria-hidden="true"></i>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="my-2 col-8 ">
-                                      <input class="w-100 rangeInput" type="range" id="volume" name="volume" min="0" max="284" value="0" />
-                                    </div>
-                                  </div>
-                                </div>
-                          </div>
-
-                  </div>
+    <div class="confirmColors container my-5 p-5 text-center">
+      <div class="mt-5 bg-light p-5 confirmColorsContent">
+        <h2 class="">Confirm Teams Colors?</h2>
+        <div class="row my-2 p-5 justify-content-center">
+          <div class="col-md-3"></div>
+          <div class="col-md-3 mt-2">
+            <div class="row">
+              <div class="col-2 text-end">
+                <div class="colorDiv LTCo ms-auto"></div>
               </div>
-              <div class="col-12 p-2 ">
-                   <div class="moreInsights my-2">
-                      <p class="mt-2">More Insights</p>
-                   </div>
+              <div class="col-10 text-start">
+                <p>Left Team</p>
               </div>
-
-
-               <!--<div class="col-9">
-                   <div class="progress my-2">
-                     <div class="progress-bar  progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
-                  </div>
-              </div>-->
-
-
+            </div>
           </div>
-
-
-
+          <div class="col-md-3 mt-2">
+            <div class="row">
+              <div class="col-2 text-end">
+                <div class="colorDiv RTCo ms-auto"></div>
+              </div>
+              <div class="col-10 text-start">
+                <p>Right Team</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-12 mt-2">
+            <div class="row mt-3">
+              <div class="col-6 text-end">
+                <button class="btn btn-success cColors">Confirm</button>
+              </div>
+              <div class="col-6 text-start">
+                <button class="btn btn-danger rColors">Reverse</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- width 1050px -->
+
+    <div class="mainSection text-light p-5 mt-5 showResultSection">
+      <div class="text-center p-3 my-3">
+        <div class="row">
+          <div class="col-md-9">
+            <div id="highlight_status" class="alert border-danger text-start" style="color: red;"></div>
+
+            <div class="row">
+              <div class="col-1 vv">
+                <div class="progressUp progress-bar-striped">0%</div>
+              </div>
+              <div class="col-11" id="kk">
+                <canvas id="videoCanvas"></canvas>
+                <div class="moreInsights moreInsights2 my-2">
+                  <p class="mt-2">More Insights</p>
+                </div>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-11 mt-3">
+                <div class="videoEdit">
+                  <div class="row align-items-center">
+                    <div class="my-2 col-4 p-2">
+                      <div class="row">
+                        <div class="col-4">
+                          <i class="fa fa-backward" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-4">
+                          <i class="fa fa-play" aria-hidden="true"></i>
+                          <i class="fa fa-pause" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="col-4">
+                          <i class="fa fa-forward" aria-hidden="true"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="my-2 col-8">
+                      <input class="w-100 rangeInput" type="range" id="volume" name="volume" min="0" max="284" value="0" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 pieAndMap mt-2">
+            <div class="pie"></div>
+            <div class="text-center">
+              <div class="d-flex justify-content-center">
+                <div class="teamColor_LT"></div>
+                <span>
+                  <p>
+                    Left Team :<span id="LTR">20</span>%
+                  </p>
+                </span>
+              </div>
+              <div class="ms-2 d-flex justify-content-center">
+                <div class="teamColor_RT"></div>
+                <span>
+                  <p>
+                    Right Team :<span id="RTR">80</span>%
+                  </p>
+                </span>
+              </div>
+            </div>
+            <div class="map">
+              <img class="img-fluid" src="{{ url_for('static', filename = 'images/loading.gif') }}" alt="" srcset="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="insightsResult my-2 p-5">
       <div class="w-100 p-2 my-2 text-end">
         <p class="closeInsights">
           <i class="fa fa-close"></i>
         </p>
       </div>
-      <div class="row align-items-center p-3">
+      <div class="row align-items-center py-3">
         <div class="col-2 insightsResultController text-center py-5">
+          <div class="borderUP"></div>
           <div id="heatMaps" class="mt-3 insightController insightControllerActive">
+            <div class="arrowRight">
+              <img class="img-fluid" src="{{ url_for('static', filename = 'images/Patharrow.png') }}" alt="" srcset="">
+            </div>
             <p>HeatMaps</p>
           </div>
 
           <div id="zone" class="mt-3 insightController">
+            <div class="arrowRight">
+              <img class="img-fluid" src="{{ url_for('static', filename = 'images/Patharrow.png') }}" alt="" srcset="">
+
+            </div>
             <p>Zone Analysis</p>
           </div>
           <div id="speed" class="mt-3 insightController">
+            <div class="arrowRight">
+              <img class="img-fluid" src="{{ url_for('static', filename = 'images/Patharrow.png') }}" alt="" srcset="">
+
+            </div>
             <p>Speed Analysis</p>
           </div>
 
           <div id="text" class="mt-3 insightController">
+            <div class="arrowRight">
+              <img class="img-fluid" src="{{ url_for('static', filename = 'images/Patharrow.png') }}" alt="" srcset="">
+
+            </div>
             <p>Text Analysis</p>
           </div>
           <div id="ai" class="mt-3 insightController">
+            <div class="arrowRight">
+              <img class="img-fluid" src="{{ url_for('static', filename = 'images/Patharrow.png') }}" alt="" srcset="">
+
+            </div>
             <p>AI Enhancement</p>
           </div>
         </div>
-  <div class="col-12 hiddenInsights">
+        <div class="col-12 hiddenInsights">
           <div class="row justify-content-center">
-            <div id="heatMaps" class="mt-1 insightController col-2 insightControllerActive">
-              <p>HeatMaps</p>
+            <div class="col-12">
+              <div class="borderUP"></div>
+            </div>
+            <br />
+            <div class="col-4 text-center">
+              <div id="heatMaps" class="mt-1 insightController ps-2 insightControllerActive">
+                <p>HeatMaps</p>
+              </div>
             </div>
 
-            <div id="zone" class="mt-1 insightController col-2">
-              <p>Zone Analysis</p>
-            </div>
-            <div id="speed" class="mt-1 insightController col-2">
-              <p>Speed Analysis</p>
+            <div class="col-4 text-center">
+              <div id="zone" class="mt-1 insightController ps-2">
+                <p>Zone Analysis</p>
+              </div>
             </div>
 
-            <div id="text" class="mt-1 insightController col-2">
-              <p>Text Analysis</p>
+            <div class="col-4 text-center">
+              <div id="speed" class="mt-1 insightController">
+                <p>Speed Analysis</p>
+              </div>
             </div>
-            <div id="ai" class="mt-1 insightController col-2">
-              <p>AI Enhancement</p>
+
+            <div class="col-4 text-center">
+              <div id="text" class="mt-1 insightController ps-2">
+                <p>Text Analysis</p>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div id="ai" class="mt-1 insightController ps-2">
+                <p>AI Enhancement</p>
+              </div>
             </div>
           </div>
         </div>
