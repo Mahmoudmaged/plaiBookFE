@@ -1,3 +1,4 @@
+
 $(window).scroll(function () {
     let scrollTop = $(window).scrollTop();
     if (scrollTop >= 70) {
@@ -28,6 +29,10 @@ $(".insightController").on("click", function () {
 })
 // Communication Part
 const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+let processDict = localStorage.getItem("processDict")?JSON.parse(localStorage.getItem("processDict")):null;
+// send the processDict to the server 
+socket.emit('start_processing', processDict);
 // Advanced setting
 function checkAdvanced() {
     const dict = JSON.parse(localStorage.getItem("processDict"));
@@ -93,8 +98,8 @@ let RTCOLOR = 'green';
 function showTeamsColors(left_team_color, right_team_color) {
     LTCOLOR = left_team_color
     RTCOLOR = right_team_color
-    $(".teamColor_LT , .LTCo").css({ backgroundColor: `${left_team_color}` });
-    $(".teamColor_RT , .RTCo").css({ backgroundColor: `${right_team_color}` });
+    $(".teamColor_LT , .LTCo").css({ backgroundColor: `rgba(${left_team_color[0]} , ${left_team_color[1]} , ${left_team_color[2]} , 1)` });
+    $(".teamColor_RT , .RTCo").css({ backgroundColor: `rgba(${right_team_color[0]} , ${right_team_color[1]} , ${right_team_color[2]} , 1)` });
 }
 socket.on('getColors', function (data) {
     LTCOLOR = data.left_team_color
@@ -119,31 +124,34 @@ $(".rColors").on('click', function () {
 
 
 // AcquisitionRatio
-socket.on('AcquisitionRatio', function (data) {
-    document.getElementById('LTR').innerText = data.left_team_ratio;
-    document.getElementById('RTR').innerText = data.right_team_ratio;
-    $(".pie").css({ backgroundImage: `conic-gradient(${LTCOLOR} ${data.left_team_ratio}%, ${RTCOLOR}  ${data.right_team_ratio}%)` });
+// socket.on('AcquisitionRatio', function (data) {
+//     document.getElementById('LTR').innerText = data.left_team_ratio;
+//     document.getElementById('RTR').innerText = data.right_team_ratio;
+//     $(".pie").css({ backgroundImage: `conic-gradient(${LTCOLOR} ${data.left_team_ratio}%, ${RTCOLOR}  ${data.right_team_ratio}%)` });
 
-    // .pie {
-    //     width: 200px;
-    //     height: 200px;
-    //     margin: auto;
-    //     background-image: conic-gradient(orange 80%, blue 20%);
-    //     border-radius: 50%;
-    // }
+//     // .pie {
+//     //     width: 200px;
+//     //     height: 200px;
+//     //     margin: auto;
+//     //     background-image: conic-gradient(orange 80%, blue 20%);
+//     //     border-radius: 50%;
+//     // }
 
-})
+// })
 // Display record
 let videoFrames = [];
+let videoMapFrames = [];
 let lastFrame = 0;
 let totalFramesNumber = 0
 let play = true;
 let frame_time = 0;
 const canvas = document.getElementById('videoCanvas');
 const ctx = canvas.getContext('2d');
+
 socket.on('totalFrameNumber', function (data) {
     totalFramesNumber = data.total_frames;
     frame_time = 0;
+    $(".rangeInput").attr("max" ,totalFramesNumber )
 })
 
 
@@ -151,6 +159,7 @@ socket.on('totalFrameNumber', function (data) {
 socket.on('new_frame', function (data) {
     //  2d map in data.bg_img
     videoFrames.push(...Object.values(data.images));
+    videoMapFrames.push(data.bg_img);
     frame_time += Object.values(data.images).length;
     //progressBar
     const overPercentage = Math.floor((frame_time / totalFramesNumber) * 100).toFixed(1);
@@ -165,72 +174,84 @@ socket.on('new_frame', function (data) {
 })
 
 const canvas22 = document.getElementById("kk")
-
-
+const fps = 5;
 function myLoop() {
-    if (play) {
+    if (play){
         const img = new Image();
-        if (lastFrame < videoFrames.length) {
-            img.onload = function () {
-                canvas.width = this.width;
-                canvas.height = this.height;
-                ctx.drawImage(img, 0, 0);
-            };
-            img.src = videoFrames[lastFrame]
+        img.onload = function () {
+            canvas.width  = this.width;
+            canvas.height = this.height;
+            ctx.drawImage(img, 0 , 0 );
             lastFrame++;
+        };
+        if (lastFrame < videoFrames.length) {
+            img.src = videoFrames[lastFrame]
+            document.getElementById('mapImage').src = videoMapFrames[parseInt(lastFrame / 16)];//map image
             $(".rangeInput").val(lastFrame)
         }
-        if (lastFrame < totalFramesNumber - 19) {
-            setTimeout(function () {
-                myLoop();
-            }, 200)
-        }
+    }
+    if (lastFrame <= totalFramesNumber) {
+        setTimeout(myLoop, 1000/fps)
+    } else {
+        play=false;
+        $(".fa-pause").hide()
+        $(".fa-play").show()
+        lastFrame=0;
+        setTimeout(myLoop, 1000/fps)
     }
 }
 
 
 //control Video Play
 //rangeInput
-$(".rangeInput").change(function () {
-    lastFrame = $(".rangeInput").val() - 1 > 0 ? $(".rangeInput").val() - 1 : 0;
-    play = true;
+$(".rangeInput").on("mousedown", function () {
+    play=false;
+    $(".fa-pause").hide()
+    $(".fa-play").show()
+})
+
+$(".rangeInput").on("mouseup", function () {
+    lastFrame= $(".rangeInput").val()-1 > 0? $(".rangeInput").val() - 1 : 0;
+    play=true;
     $(".fa-play").hide()
     $(".fa-pause").show()
-    //chang icon
-    myLoop();
 })
+
 //play
 $(".fa-play").on("click", function () {
-    play = true;
-    $(".fa-play").hide()
-    $(".fa-pause").show()
-    //chang icon
-    myLoop();
+       play=true;
+       //change icon
+       $(".fa-play").hide()
+       $(".fa-pause").show()
 })
-$(".fa-pause").on("click", function () {
-    play = false;
-    $(".fa-play").show()
-    $(".fa-pause").hide()
-    //chang icon
-    myLoop();
-})
-//go forward
-$(".fa-forward").on("click", function () {
-    play = true;
-    $(".fa-play").hide()
-    $(".fa-pause").show()
-    lastFrame = lastFrame + 25 < videoFrames.length ? lastFrame + 25 : videoFrames.length - 1;
-    myLoop();
-})
-//go backward
-$(".fa-backward").on("click", function () {
-    play = true;
 
+//pause
+$(".fa-pause").on("click", function () {
+       play=false;
+       //change icon
+       $(".fa-play").show()
+       $(".fa-pause").hide()
+})
+
+//go forward
+$(".fa-forward").on( "click",function () {
+    play=false;
     $(".fa-play").hide()
     $(".fa-pause").show()
-    lastFrame = lastFrame - 25 > 0 ? lastFrame - 25 : 0;
-    myLoop();
+    lastFrame = lastFrame+3*fps< videoFrames.length ? lastFrame+3*fps : videoFrames.length-1;
+    play=true;
 })
+
+//go backward
+$(".fa-backward").on( "click",function () {
+    play=false;
+    $(".fa-play").hide()
+    $(".fa-pause").show()
+    lastFrame = lastFrame-3*fps > 0 ? lastFrame - 3*fps  : 0;
+    play=true;
+})
+
+
 // progress
 let mouseX = 0;
 document.addEventListener("mousemove", (event) => {
@@ -308,11 +329,17 @@ socket.on('right_team_players_speed', function (data) {
 // text_analysis
 socket.on('text_analysis', function (data) {
     const text = data['text_analysis'];
+    console.log({ text });
     document.getElementById('leftTeamText').innerText = text.left_team.join('');
     document.getElementById('rightTeamText').innerText = text.right_team.join('');
     document.getElementById('refererTeamText').innerText = text.referee.join('');
     document.getElementById('gapsIdentifierText').innerText = text.gabs.join('');
     document.getElementById('otherText').innerText = text.time.join('');
+
+    document.getElementById('LTR').innerText = parseFloat(text.left_team[5]);
+    document.getElementById('RTR').innerText = parseFloat(text.right_team[5]);
+    $(".pie").css({ backgroundImage: `conic-gradient(${LTCOLOR} ${parseFloat(text.left_team[5])}%, ${RTCOLOR}  ${parseFloat(text.right_team[5])}%)` });
+
 });
 
 

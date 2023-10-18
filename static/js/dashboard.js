@@ -391,7 +391,7 @@ function startProcessing() {
             show_distance: $("#showDistanceInput").is(":checked") ? $("#showDistanceInput").val() : null,
         }
         localStorage.setItem("processDict", JSON.stringify(dict))
-        socket.emit('start_processing', dict);
+        // socket.emit('start_processing', dict);
         $(".loading").hide()
         window.location.href = '/result';
     }
