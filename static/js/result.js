@@ -30,7 +30,7 @@ $(".insightController").on("click", function () {
 // Communication Part
 const socket = io.connect('http://' + document.domain + ':' + location.port);
 
-let processDict = localStorage.getItem("processDict")?JSON.parse(localStorage.getItem("processDict")):null;
+let processDict = localStorage.getItem("processDict") ? JSON.parse(localStorage.getItem("processDict")) : null;
 // send the processDict to the server 
 socket.emit('start_processing', processDict);
 // Advanced setting
@@ -151,7 +151,7 @@ const ctx = canvas.getContext('2d');
 socket.on('totalFrameNumber', function (data) {
     totalFramesNumber = data.total_frames;
     frame_time = 0;
-    $(".rangeInput").attr("max" ,totalFramesNumber )
+    $(".rangeInput").attr("max", totalFramesNumber)
 })
 
 
@@ -176,12 +176,12 @@ socket.on('new_frame', function (data) {
 const canvas22 = document.getElementById("kk")
 const fps = 5;
 function myLoop() {
-    if (play){
+    if (play) {
         const img = new Image();
         img.onload = function () {
-            canvas.width  = this.width;
+            canvas.width = this.width;
             canvas.height = this.height;
-            ctx.drawImage(img, 0 , 0 );
+            ctx.drawImage(img, 0, 0);
             lastFrame++;
         };
         if (lastFrame < videoFrames.length) {
@@ -191,13 +191,13 @@ function myLoop() {
         }
     }
     if (lastFrame <= totalFramesNumber) {
-        setTimeout(myLoop, 1000/fps)
+        setTimeout(myLoop, 1000 / fps)
     } else {
-        play=false;
+        play = false;
         $(".fa-pause").hide()
         $(".fa-play").show()
-        lastFrame=0;
-        setTimeout(myLoop, 1000/fps)
+        lastFrame = 0;
+        setTimeout(myLoop, 1000 / fps)
     }
 }
 
@@ -205,50 +205,50 @@ function myLoop() {
 //control Video Play
 //rangeInput
 $(".rangeInput").on("mousedown", function () {
-    play=false;
+    play = false;
     $(".fa-pause").hide()
     $(".fa-play").show()
 })
 
 $(".rangeInput").on("mouseup", function () {
-    lastFrame= $(".rangeInput").val()-1 > 0? $(".rangeInput").val() - 1 : 0;
-    play=true;
+    lastFrame = $(".rangeInput").val() - 1 > 0 ? $(".rangeInput").val() - 1 : 0;
+    play = true;
     $(".fa-play").hide()
     $(".fa-pause").show()
 })
 
 //play
 $(".fa-play").on("click", function () {
-       play=true;
-       //change icon
-       $(".fa-play").hide()
-       $(".fa-pause").show()
+    play = true;
+    //change icon
+    $(".fa-play").hide()
+    $(".fa-pause").show()
 })
 
 //pause
 $(".fa-pause").on("click", function () {
-       play=false;
-       //change icon
-       $(".fa-play").show()
-       $(".fa-pause").hide()
+    play = false;
+    //change icon
+    $(".fa-play").show()
+    $(".fa-pause").hide()
 })
 
 //go forward
-$(".fa-forward").on( "click",function () {
-    play=false;
+$(".fa-forward").on("click", function () {
+    play = false;
     $(".fa-play").hide()
     $(".fa-pause").show()
-    lastFrame = lastFrame+3*fps< videoFrames.length ? lastFrame+3*fps : videoFrames.length-1;
-    play=true;
+    lastFrame = lastFrame + 3 * fps < videoFrames.length ? lastFrame + 3 * fps : videoFrames.length - 1;
+    play = true;
 })
 
 //go backward
-$(".fa-backward").on( "click",function () {
-    play=false;
+$(".fa-backward").on("click", function () {
+    play = false;
     $(".fa-play").hide()
     $(".fa-pause").show()
-    lastFrame = lastFrame-3*fps > 0 ? lastFrame - 3*fps  : 0;
-    play=true;
+    lastFrame = lastFrame - 3 * fps > 0 ? lastFrame - 3 * fps : 0;
+    play = true;
 })
 
 
@@ -338,7 +338,13 @@ socket.on('text_analysis', function (data) {
 
     document.getElementById('LTR').innerText = parseFloat(text.left_team[5]);
     document.getElementById('RTR').innerText = parseFloat(text.right_team[5]);
-    $(".pie").css({ backgroundImage: `conic-gradient(${LTCOLOR} ${parseFloat(text.left_team[5])}%, ${RTCOLOR}  ${parseFloat(text.right_team[5])}%)` });
+    $(".pie").css({
+        backgroundImage: `conic-gradient(
+        ${LTCOLOR} 0% ,
+        ${LTCOLOR} ${parseInt(text.left_team[5])}% , 
+        ${RTCOLOR}  ${parseInt(text.left_team[5])}% ,
+        ${RTCOLOR}  100%)`
+    });
 
 });
 
