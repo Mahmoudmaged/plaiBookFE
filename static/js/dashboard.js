@@ -323,8 +323,10 @@ $(".confirmYoutubeLink").on("click", function () {
     if (!$('#YoutubeURLVal').val()) {
         sideAlert("Please enter your youtube link.")
     } else {
-        $(".mainSection_select , .mainSection_upload_video  ,.mainSection_upload_video_link ").hide(300)
-        $(".mainSection_email").delay(300).show(200)
+        // $(".mainSection_select , .mainSection_upload_video  ,.mainSection_upload_video_link ").hide(300)
+        // $(".mainSection_email").delay(300).show(200)
+        $(window).scrollTop($(".sectionTwo").offset().top)
+
     }
 
 })
@@ -355,8 +357,10 @@ function uploadVideo() {
         }).then(response => response.json()).then(data => {
             uploadedVideoPath = data.path;
             $(".loading").hide()
-            $(".mainSection_select , .mainSection_upload_video  ,.mainSection_upload_video_link ").hide(300)
-            $(".mainSection_email").delay(300).show(200)
+            // $(".mainSection_select , .mainSection_upload_video  ,.mainSection_upload_video_link ").hide(300)
+            // $(".mainSection_email").delay(300).show(200)
+            $(window).scrollTop($(".sectionTwo").offset().top)
+
         });
     } else {
         $(".loading").hide()
@@ -372,6 +376,8 @@ function startProcessing() {
     } else if (!uploadedVideoPath && !$('#YoutubeURLVal').val()) {
         $(".loading").hide()
         sideAlert("Please upload your video or put YouTube link.")
+        $(window).scrollTop($(".mainSection").offset().top)
+
     }
     else {
         const dict = {
