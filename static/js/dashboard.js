@@ -393,7 +393,8 @@ function startProcessing() {
             show_heatmap: $("#heatMapsInput").is(":checked") ? $("#heatMapsInput").val() : null,
             show_zone_analysis: $("#zoneAnalysisInput").is(":checked") ? $("#zoneAnalysisInput").val() : null,
             show_speed_analysis: $("#speedAnalysisInput").is(":checked") ? $("#speedAnalysisInput").val() : null,
-            show_text_analysis: $("#textAnalysisInput").is(":checked") ? $("#textAnalysisInput").val() : null,
+            show_text_analysis: true,
+            // show_text_analysis: $("#textAnalysisInput").is(":checked") ? $("#textAnalysisInput").val() : null,
             show_distance: $("#showDistanceInput").is(":checked") ? $("#showDistanceInput").val() : null,
         }
         localStorage.setItem("processDict", JSON.stringify(dict))
